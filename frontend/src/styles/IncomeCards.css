@@ -1,0 +1,66 @@
+.income-card .usa-card__header .usa-button {
+    background-color: transparent;
+    width: 3em;
+    margin-left: -1em;
+}
+
+.income-card .usa-card__header .usa-button--outline {
+    box-shadow: none !important;
+} 
+
+.income-card .usa-card__media {
+    display: flex;
+    justify-content: center;
+}
+
+.income-card .usa-card__media :hover {
+    background-color: #ACECD7;
+    cursor: pointer;
+}
+
+.income-card .usa-card__media .usa-card__img {
+    background-color: transparent;
+    width: 5.5em;
+}
+
+.income-card .usa-card__container .usa-card__body {
+    padding-bottom: 0;
+}
+
+.income-card .usa-card__container .usa-card__footer {
+    padding-bottom: 1rem;
+    padding-top: 0.1rem;
+    padding-right: 0.3rem;
+}
+
+.income-card .usa-card__footer .usa-button {
+    background-color: transparent;
+    width: 4em;
+}
+
+.income-card .usa-card__footer .usa-button--outline {
+    box-shadow: none !important;
+}
+
+.income-card .usa-card__container {
+    width: 15em;
+
+    border-radius: 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.income-card .editButton {
+    padding-block: 0 !important;
+}
+
+.income-card li {
+    list-style-type: none;
+}
+
+.income-card .backSide .usa-card__body {
+    padding: 0 !important;
+}
+
+.income-card .backSide .usa-card__body :hover {
+    cursor: pointer;
+}
