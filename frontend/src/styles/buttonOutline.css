@@ -1,0 +1,22 @@
+.usa-button--outline{
+    box-shadow: inset 0 0 0 2px #04c585 !important;
+    color: #04c585 !important;
+}
+
+.usa-radio__input:checked+[class*=__label]::before{
+    background-color:#34a37e !important;
+}
+
+.usa-radio__input:checked+[class*=__label]::before {
+    box-shadow: 0 0 0 2px #34a37e, inset 0 0 0 2px #fff !important;
+}
+
+.add-income-button {
+    /* background-color: white !important;
+    color: black !important;
+    width: 15em !important;
+    height: 15em !important;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); */
+    background-color: #04c585 !important;
+}

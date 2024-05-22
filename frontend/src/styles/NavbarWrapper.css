@@ -1,0 +1,9 @@
+.linkSideNavbar:hover{
+    background-color: black !important;
+}
+.usa-sidenav__item{
+    border-top: none !important;
+}
+.usa-sidenav{
+    border-bottom: none !important;
+}
