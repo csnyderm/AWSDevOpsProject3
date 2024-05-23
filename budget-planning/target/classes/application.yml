@@ -1,0 +1,24 @@
+server:
+  port: 8083
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://root:password@project3-tfbd.cluster-clis6agkvpm0.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
+      database: skillvestDB
+
+  application:
+    name: planner-service
+
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    service-url:
+      defaultZone: ${EUREKA_URI:http://eureka.default.svc.cluster.local/eureka/}
+  instance:
+    preferIpAddress: true
