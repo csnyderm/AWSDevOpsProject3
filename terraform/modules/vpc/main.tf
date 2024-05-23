@@ -1,12 +1,6 @@
 provider "aws" {
   # Configuration options
   region = "us-east-1"
-  default_tags {
-    tags = {
-      environment = terraform.workspace
-    }
-  }
-  profile = "785169158894_Student"
 }
 
 
@@ -36,6 +30,7 @@ resource "aws_subnet" "public_subnets" {
   cidr_block = cidrsubnet(var.vpc_cidr, 8, each.value + 100)
   ## 100 is skipping (reserving) the first 100 IPs
   availability_zone = tolist(data.aws_availability_zones.available.names)[each.value]
+  map_public_ip_on_launch = true
 
   tags = {
     Name = each.key
