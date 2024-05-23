@@ -1,11 +1,16 @@
+# All Terraform state and locks.
 terraform/modules/*/.terraform
 terraform/modules/*/.terraform.lock.hcl
 terraform/modules/*/terraform.tfstate
 terraform/modules/*/.terraform*
 terraform/.terraform
 terraform/.terraform.lock.hcl
+terraform/.terraform.tfstate
+terraform/.terraform*
+
+# All targets created due to MAVEN extension in VS Code
 API/target
 budget-planning/target
 investments/target
 tax-estimator/target
-terraform.tfstate
+account-management/target
