@@ -2,3 +2,5 @@ terraform/modules/*/.terraform
 terraform/modules/*/.terraform.lock.hcl
 terraform/.terraform
 terraform/.terraform.lock.hcl
+API/target
+budget-planning/target
