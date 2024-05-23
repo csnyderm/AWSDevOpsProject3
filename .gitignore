@@ -1,0 +1,11 @@
+terraform/modules/*/.terraform
+terraform/modules/*/.terraform.lock.hcl
+terraform/modules/*/terraform.tfstate
+terraform/modules/*/.terraform*
+terraform/.terraform
+terraform/.terraform.lock.hcl
+API/target
+budget-planning/target
+investments/target
+tax-estimator/target
+terraform.tfstate

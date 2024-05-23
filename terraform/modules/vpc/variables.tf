@@ -28,7 +28,7 @@ variable "public_subnets" {
 }
 
 variable "eks_sg_name" {
-  type = string
+  type    = string
   default = "team-cuttlefish_eks_sg"
 }
 

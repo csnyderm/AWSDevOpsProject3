@@ -15,7 +15,7 @@ resource "aws_vpc" "project3_vpc" {
 
   tags = {
     Name   = var.vpc_name
-    region = data.aws_region.current_name
+    region = var.aws_region
   }
 }
 
@@ -43,7 +43,7 @@ resource "aws_subnet" "public_subnets" {
 }
 
 resource "aws_internet_gateway" "team-cuttlefish_igw" {
-  vpc_id = aws_vpc.terraform_vpc.id
+  vpc_id = aws_vpc.project3_vpc.id
 
   tags = {
     Name = "team-cuttlefish_igw"
@@ -51,7 +51,7 @@ resource "aws_internet_gateway" "team-cuttlefish_igw" {
 }
 
 resource "aws_route_table" "public_route_table" {
-  vpc_id = aws_vpc.terraform_vpc.id
+  vpc_id = aws_vpc.project3_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -65,9 +65,9 @@ resource "aws_route_table" "public_route_table" {
 
 
 resource "aws_security_group" "eks_sg" {
-  name = var.eks_sg_name
+  name        = var.eks_sg_name
   description = "Allows traffic and connection to EKS cluster from approved sources"
-  vpc_id = aws_vpc.project3_vpc.id
+  vpc_id      = aws_vpc.project3_vpc.id
 
   tags = {
     Name = var.eks_sg_name
@@ -75,7 +75,7 @@ resource "aws_security_group" "eks_sg" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
-  security_group_id = aws_security_group.eks_sg
+  security_group_id = aws_security_group.eks_sg.id
   cidr_ipv4         = "0.0.0.0/0" # Narrow later
   from_port         = 22
   to_port           = 22
@@ -83,7 +83,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_http" {
-  security_group_id = aws_security_group.eks_sg
+  security_group_id = aws_security_group.eks_sg.id
   cidr_ipv4         = "0.0.0.0/0" # Narrow later
   from_port         = 80
   to_port           = 80
