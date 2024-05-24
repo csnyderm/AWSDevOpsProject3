@@ -3,6 +3,11 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
+variable "team" {
+  type = string
+  default = "cuttlefish"
+}
+
 variable "vpc_cidr" {
   type    = string
   default = "10.0.0.0/16"
@@ -17,6 +22,7 @@ variable "private_subnets" {
   default = {
     "team-cuttlefish-private1" = 1
     "team-cuttlefish-private2" = 2
+    "team-cuttlefish-private3" = 3
   }
 }
 
