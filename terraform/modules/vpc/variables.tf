@@ -4,7 +4,7 @@ variable "aws_region" {
 }
 
 variable "team" {
-  type = string
+  type    = string
   default = "cuttlefish"
 }
 

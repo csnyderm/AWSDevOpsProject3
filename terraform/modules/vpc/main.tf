@@ -10,7 +10,7 @@ resource "aws_vpc" "team-cuttlefish_vpc" {
   tags = {
     Name   = var.vpc_name
     region = var.aws_region
-    team = var.team
+    team   = var.team
   }
 }
 
@@ -43,7 +43,7 @@ resource "aws_internet_gateway" "team-cuttlefish_igw" {
   vpc_id = aws_vpc.team-cuttlefish_vpc.id
 
   tags = {
-    Name = "team-cuttlefish_igw"
+    Name = "team-cuttlefish-igw"
     team = var.team
   }
 }
@@ -56,18 +56,18 @@ resource "aws_route_table" "public_route_table" {
     gateway_id = aws_internet_gateway.team-cuttlefish_igw.id
   }
   tags = {
-    Name = "public_rtb" # Maybe variable
+    Name = "public-rtb" # Maybe variable
     team = var.team
   }
 }
 
 resource "aws_route_table_association" "public1_association" {
-  subnet_id = aws_subnet.public_subnets["team-cuttlefish-public1"].id
+  subnet_id      = aws_subnet.public_subnets["team-cuttlefish-public1"].id
   route_table_id = aws_route_table.public_route_table.id
 }
 
 resource "aws_route_table_association" "public2_association" {
-  subnet_id = aws_subnet.public_subnets["team-cuttlefish-public2"].id
+  subnet_id      = aws_subnet.public_subnets["team-cuttlefish-public2"].id
   route_table_id = aws_route_table.public_route_table.id
 }
 
@@ -98,17 +98,17 @@ resource "aws_route_table" "private_route_table" {
 }
 
 resource "aws_route_table_association" "private1_association" {
-  subnet_id = aws_subnet.private_subnets["team-cuttlefish-private1"].id
+  subnet_id      = aws_subnet.private_subnets["team-cuttlefish-private1"].id
   route_table_id = aws_route_table.private_route_table.id
 }
 
 resource "aws_route_table_association" "private2_association" {
-  subnet_id = aws_subnet.private_subnets["team-cuttlefish-private2"].id
+  subnet_id      = aws_subnet.private_subnets["team-cuttlefish-private2"].id
   route_table_id = aws_route_table.private_route_table.id
 }
 
 resource "aws_route_table_association" "private3_association" {
-  subnet_id = aws_subnet.private_subnets["team-cuttlefish-private3"].id
+  subnet_id      = aws_subnet.private_subnets["team-cuttlefish-private3"].id
   route_table_id = aws_route_table.private_route_table.id
 }
 

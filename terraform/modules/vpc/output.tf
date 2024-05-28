@@ -9,3 +9,7 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   value = [for subnet in aws_subnet.private_subnets : subnet.id]
 }
+
+output "cluster_security_group" {
+  value = aws_security_group.eks_sg.id
+}
