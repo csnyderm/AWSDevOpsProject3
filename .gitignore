@@ -18,6 +18,7 @@ budget-planning/target
 investments/target
 tax-estimator/target
 account-management/target
+eureka/target
 
 ## Files for debugging during testing
 terraform/modules/*/*.pem
