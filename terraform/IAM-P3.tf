@@ -104,10 +104,9 @@ resource "aws_iam_role" "eks_role" {
     ]
   })
 }
-
-resource "aws_iam_policy" "eks_policy" {
-  name        = "EKSPolicy"
-  description = "Policy for EKS access"
+resource "aws_iam_policy" "eks_cluster_policy" {
+  name        = "EKSClusterPolicy"
+  description = "Policy for EKS Cluster Role"
   
   policy = jsonencode({
     Version = "2012-10-17",
@@ -116,7 +115,13 @@ resource "aws_iam_policy" "eks_policy" {
         Effect   = "Allow",
         Action   = [
           "ec2:DescribeInstances",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeVpcs",
           "elasticloadbalancing:DescribeLoadBalancers",
+          "elasticloadbalancing:DescribeTargetGroups",
+          "elasticloadbalancing:DescribeListeners",
           "cloudwatch:PutMetricData",
           "eks:DescribeCluster",
           "eks:CreateCluster",
@@ -130,17 +135,55 @@ resource "aws_iam_policy" "eks_policy" {
           "autoscaling:DescribeAutoScalingGroups",
           "autoscaling:DescribeLaunchConfigurations",
           "autoscaling:DescribeScalingActivities",
-          "autoscaling:DescribeTags"
+          "autoscaling:DescribeTags",
+          "autoscaling:CreateOrUpdateTags",
+          "autoscaling:UpdateAutoScalingGroup",
+          "autoscaling:CreateAutoScalingGroup",
+          "autoscaling:DeleteAutoScalingGroup",
+          "autoscaling:AttachInstances",
+          "autoscaling:DetachInstances",
+          "autoscaling:TerminateInstanceInAutoScalingGroup",
+          "autoscaling:SetDesiredCapacity"
         ],
         Resource = "*"
       }
     ]
   })
 }
+resource "aws_iam_role" "eks_nodegroup_role" {
+  name = "AmazonEKSNodeRole"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
 
-resource "aws_iam_role_policy_attachment" "eks_policy_attach" {
-  role       = aws_iam_role.eks_role.name
-  policy_arn = aws_iam_policy.eks_policy.arn
+resource "aws_iam_role_policy_attachment" "eks_cni_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.eks_nodegroup_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "eks_worker_node_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.eks_nodegroup_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent_server_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  role       = aws_iam_role.eks_nodegroup_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_container_registry_read_only" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.eks_nodegroup_role.name
 }
 
 resource "aws_iam_role" "s3_role" {
