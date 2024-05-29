@@ -19,6 +19,7 @@ eksctl utils associate-iam-oidc-provider --region $aws_region --cluster $cluster
 # Next, create the IAM service account - Use this block if we are using the default
 #curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/install/iam_policy.json
 #policy_arn=$(aws iam create-policy --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://iam-policy.json | jq .Policy.Arn)
+#rm iam-policy.json # Clean up the file after
 
 # Next, create the IAM service account - Use this block if we are getting input from policy_arn
 
@@ -35,3 +36,5 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n ku
 
 echo "Please verify that the load balancer was installed in following output: "
 echo $(kubectl get deployments -n kube-system)
+
+

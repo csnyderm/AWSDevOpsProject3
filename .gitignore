@@ -22,3 +22,5 @@ eureka/target
 
 ## Files for debugging during testing
 terraform/modules/*/*.pem
+terraform/modules/*/*.txt
+terraform/modules/*/*.json
