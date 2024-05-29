@@ -38,7 +38,7 @@ variable "cluster_auth_mode" {
 
 variable "cluster_security_group" {
   type = list(string)
-  default = ["sg-02f2d86c0371bcdd0"]
+  default = ["sg-0e9f6672dde28a9ea"]
 }
 
 /* 
@@ -50,6 +50,16 @@ module "eks" {
   # Maybe use private or add instead?
 }
 */
+
+variable "student_principal" {
+  type = string
+  default = "arn:aws:iam::785169158894:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_Student_1462e2a20cbcb77f"
+}
+
+variable "eks_user_policy" {
+  type = string
+  default = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+}
 
 variable "cni_version" {
   type = string
