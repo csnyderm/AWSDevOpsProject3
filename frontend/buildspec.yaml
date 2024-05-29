@@ -1,0 +1,38 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo Updating apt-get...
+      - apt-get update -y
+      - echo Installing dependencies...
+      - npm install npm@8.19.4
+      - npm install typescript
+      - npm install react react-dom react-router-dom
+
+  pre_build:
+    commands:
+      - echo Running pre-build tasks...
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws)
+      - REPOSITORY_URI=public.ecr.aws/e2j5x1k4/frontend
+      - IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - npm run build
+      - echo Build completed on `date`
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+
+  post_build:
+    commands:
+      - echo Pushing the Docker image...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Docker image pushed successfully
+      - echo Uploading build artifacts to S3...
+      - aws s3 cp --recursive dist s3://teamcuttlefish
