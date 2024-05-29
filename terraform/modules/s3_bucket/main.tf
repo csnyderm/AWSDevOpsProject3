@@ -5,7 +5,15 @@ resource "aws_s3_bucket" "static_site" {
     index_document = var.index_document
     error_document = var.error_document
   }
+
+  tags = var.tags
 }
+
+
+data "aws_prefix_list" "cloudfront_origin_facing" {
+  prefix_list_id = "pl-3b927c52"
+}
+  
 
 resource "aws_s3_bucket_policy" "static_site_policy" {
   bucket = aws_s3_bucket.static_site.id
@@ -14,11 +22,36 @@ resource "aws_s3_bucket_policy" "static_site_policy" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid: "AllowCloudFrontServicePrincipal",
         Effect = "Allow"
         Principal = {
           "AWS" = var.cloudfront_origin_access_identity_arn
         }
         Action   = "s3:GetObject"
+        Resource = "${aws_s3_bucket.static_site.arn}/*"
+      },
+      {
+        Sid: "AllowCloudFrontOriginFacingIPRanges",
+        Effect = "Allow",
+        Principal = "*",
+        Action = "s3:GetObject",
+        Resource = "${aws_s3_bucket.static_site.arn}/*",
+        Condition = {
+          IpAddress = {
+            "aws:SourceIp" = "${data.aws_prefix_list.cloudfront_origin_facing.cidr_blocks}"
+          }
+        }
+      },
+       {
+        Sid: "AllowCodeBuildFrontendRole",
+        Effect = "Allow",
+        Principal = {
+          AWS = "${aws_iam_role.codebuild_role.arn}"
+        },
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ],
         Resource = "${aws_s3_bucket.static_site.arn}/*"
       }
     ]
