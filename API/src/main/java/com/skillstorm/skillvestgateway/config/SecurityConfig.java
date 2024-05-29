@@ -16,7 +16,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http
+        http
                 .cors().and()
                 .csrf().disable()
                 .authorizeExchange()
@@ -24,8 +24,19 @@ public class SecurityConfig {
                 .anyExchange().authenticated()
                 .and()
                 .httpBasic().disable()
-                .oauth2Login()
-                .and()
-                .build();
+                .http.cors().configurationSource(corsConfigurationSource())
+                .oauth2Login();
+        return http.build();
     }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.seAllowedOrigins(Arrays.asList("https://team-cuttlefish.aws-tfbd.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
+}
 }
