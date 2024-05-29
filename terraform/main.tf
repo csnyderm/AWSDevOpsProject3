@@ -26,3 +26,7 @@ output "s3_bucket_name" {
 output "cloudfront_domain_name" {
   value = module.cloudfront.cloudfront_domain_name
 }
+
+data "aws_s3_bucket" "codepipeline_bucket" {
+  bucket = "codepipeline-us-east-1-778398079089"
+}
