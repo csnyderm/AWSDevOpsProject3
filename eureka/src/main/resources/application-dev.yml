@@ -1,5 +1,5 @@
 app:
-  redirectUrl: https://frontend.skillstormcloud.com
+  redirectUrl: https://frontend.skillstormcloud.com #change
   logoutUrl: https://frontend.skillstormcloud.com
   origin: https://frontend.skillstormcloud.com
 
@@ -12,7 +12,7 @@ eureka:
     fetch-registry: true
     service-url:
 #      defaultZone: ${EUREKA_URI:http://host.docker.internal:8761/eureka/}
-      defaultZone: http://eureka.default.svc.cluster.local/eureka
+      defaultZone: http://eureka.default.svc.cluster.local/eureka #change
   instance:
     preferIpAddress: true
 
@@ -21,7 +21,7 @@ spring:
     oauth2:
       client:
         registration:
-          cognito:
+          cognito: #change, these values will be different than other dirs bc its the service mesh
             provider: cognito
             clientId: 1ci038800mova12nr2es3aied8
             clientSecret: 14kptrj6tu9jdfe7iqcek0nsbhuraaghv6nrgeccm0od582m25an
@@ -30,7 +30,7 @@ spring:
 #            redirect-uri: http://localhost:8125/login/oauth2/code/cognito
             clientName: SkillVest
             authorization-grant-type: authorization_code
-        provider:
+        provider: #change
           cognito:
             authorization-uri: https://skillvest.auth.us-east-1.amazoncognito.com/oauth2/authorize
             token-uri: https://skillvest.auth.us-east-1.amazoncognito.com/oauth2/token
@@ -51,7 +51,7 @@ spring:
         add-to-simple-url-handler-mapping: "true"
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:5173"
+            allowedOrigins: "http://localhost:5173" #change (in prod)
             allowedHeaders: "*"
             allowCredentials: true
             allowedMethods:
@@ -60,7 +60,7 @@ spring:
               - PUT
               - DELETE
               - OPTIONS
-      routes:
+      routes: #change
         - id: planner-service
           uri: lb://planner-service
           predicates:
