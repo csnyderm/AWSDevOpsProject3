@@ -19,7 +19,7 @@ export const plannerApi = createApi({
   baseQuery: fetchBaseQuery({
     credentials: "include",
     //baseUrl: " http://localhost:8125/planner",
-    baseUrl: "https://api.skillstormcloud.com/planner",
+    baseUrl: "https://api.skillstormcloud.com/planner", //change
   }),
   tagTypes: ["planner"],
   endpoints: (builder) => ({

@@ -4,7 +4,7 @@ server:
 
 spring:
     data:
-        mongodb:
+        mongodb: #change
                 uri: mongodb://root:password@project3-tfbd.cluster-clis6agkvpm0.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
                 database: skillvestDB
     mvc:
@@ -25,6 +25,6 @@ eureka:
     registerWithEureka: true
     fetchRegistry: false
     service-url:
-      defaultZone: ${EUREKA_URI:http://eureka.default.svc.cluster.local/eureka/}
+      defaultZone: ${EUREKA_URI:http://eureka.default.svc.cluster.local/eureka/} #change
   instance:
     preferIpAddress: true
