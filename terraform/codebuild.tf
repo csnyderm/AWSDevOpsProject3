@@ -20,7 +20,7 @@ resource "aws_codebuild_project" "project" {
 
   source {
     type            = "CODECOMMIT"
-    location        = element([aws_codecommit_repository.frontend.repository_name, aws_codecommit_repository.api.repository_name, aws_codecommit_repository.account_management.repository_name, aws_codecommit_repository.budget_planning.repository_name, aws_codecommit_repository.eureka.repository_name, aws_codecommit_repository.investments.repository_name, aws_codecommit_repository.tax_estimator.repository_name], count.index)
+    location        = element([aws_codecommit_repository.frontend.repository_name, aws_codecommit_repository.API.repository_name, aws_codecommit_repository.account_management.repository_name, aws_codecommit_repository.budget_planning.repository_name, aws_codecommit_repository.eureka.repository_name, aws_codecommit_repository.investments.repository_name, aws_codecommit_repository.tax_estimator.repository_name], count.index)
     buildspec       = "buildspec.yml"
     git_clone_depth = 1
   }

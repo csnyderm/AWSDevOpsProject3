@@ -3,7 +3,7 @@ resource "aws_codecommit_repository" "frontend" {
   description     = "Frontend CodeCommit repository"
 }
 
-resource "aws_codecommit_repository" "api" {
+resource "aws_codecommit_repository" "API" {
   repository_name = "API"
   description     = "API CodeCommit repository"
 }
