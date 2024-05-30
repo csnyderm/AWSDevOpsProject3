@@ -13,6 +13,7 @@ module "eks_module" {
   
   node_subnet_ids = module.vpc_module.public_subnet_ids
   cluster_security_group = [module.vpc_module.cluster_security_group]
+  node_group_security_group = [module.vpc_module.cluster_security_group]
 
   #! These two are required
   cluster_public = tolist(module.vpc_module.public_subnet_ids)

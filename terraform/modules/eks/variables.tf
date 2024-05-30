@@ -12,23 +12,15 @@ variable "vpc_id" {
   type = string
   default = "null"
 }
-/* 
-# Add this to the main in order to get the correct vpc_id
-module "eks" {
-  source = "./modules/eks"
-  
-  vpc_id = module.vpc.vpc_id
-}
-*/
 
 variable "cluster_name" {
   type = string
   default = "team-cuttlefish-cluster"
 }
 
+#? Required value
 variable "cluster_subnet_ids" {
   type = list(string)
-  default = [1,2]
 }
 
 
@@ -37,20 +29,10 @@ variable "cluster_auth_mode" {
   default = "API_AND_CONFIG_MAP"
 }
 
+#? Required value
 variable "cluster_security_group" {
   type = list(string)
-  default = ["sg-0e9f6672dde28a9ea"]
 }
-
-/* 
-# Add this to the main in order to get the correct subnet_id
-module "eks" {
-  source = "./modules/eks"
-  
-  vpc_id = module.vpc.public_subnet_id
-  # Maybe use private or add instead?
-}
-*/
 
 variable "student_principal" {
   type = string
@@ -92,9 +74,9 @@ variable "nodegroup_name" {
   default = "team-cuttlefish-nodegroup"
 }
 
+#? Required value
 variable "node_subnet_ids" {
   type = list(string)
-  default = [1,2]
 }
 
 variable "desired_nodes" {
@@ -127,6 +109,7 @@ variable "node_disk_size" {
   default = "20GB"
 }
 
+#! Consider ON_DEMAND
 variable "node_instance_pricing" {
   type = string
   description = "The pricing model for the instances. Valid: ON_DEMAND, SPOT"
@@ -139,6 +122,7 @@ variable "node_instance_types" {
   default = ["m5.large"]
 }
 
+#! Consider removing
 variable "nodes_ssh_key" {
   type = string
   description = "The SSH key used to access Nodes"
@@ -146,13 +130,23 @@ variable "nodes_ssh_key" {
 }
 
 
+#? Required value
 variable "cluster_public" {
   type = list(string)
   description = "The public subnets of the cluster"
 }
 
-
+#? Required value
 variable "cluster_private" {
   type = list(string)
   description = "The private subnets of the cluster"
+}
+
+#? Required value
+#! Update this either adding the SG in EKS or in VPC.
+#! This needs to allow port 80 and 43, I believe
+#! The other needs to allow 8215 from all, I believe
+variable "node_group_security_group" {
+  type = list(string)
+  description = "The security group to use for the node group"
 }
