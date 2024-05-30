@@ -10,18 +10,19 @@ resource "aws_eks_cluster" "project3-cluster" {
   role_arn = "arn:aws:iam::785169158894:role/EKSClusterRoleDemo"
   vpc_config {
     #subnet_ids = var.subnet_ids
-    subnet_ids = [ "subnet-0ac806cdd9cf59d50","subnet-07a5b253f219f3bb5","subnet-070793599fb15b38c","subnet-03e2ff3997a375a97"]
+    subnet_ids = var.cluster_subnet_ids
     security_group_ids = var.cluster_security_group
   }
 
   access_config {
     authentication_mode = var.cluster_auth_mode
   }
-  /*
-  depends_on = [
-    aws_iam_role_policy_attachment.example-AmazonEKSClusterPolicy,
-  ]
-  */
+  
+  /*depends_on = [
+    #aws_iam_role_policy_attachment.example-AmazonEKSClusterPolicy,
+    module.vpc_module.aws_vpc
+  ]*/
+  
 
   tags = {
     team = var.team
@@ -80,7 +81,7 @@ resource "aws_eks_node_group" "team-cuttlefish-nodegroup" {
   #node_role_arn   = aws_iam_role.example.arn # Replace later with other
   #subnet_ids      = aws_subnet.example[*].id # Replace later with subnets
   node_role_arn = "arn:aws:iam::785169158894:role/AmazonEKSNodeRole"
-  subnet_ids = [ "subnet-070793599fb15b38c","subnet-03e2ff3997a375a97" ]
+  subnet_ids = var.node_subnet_ids
 
   scaling_config {
     desired_size = var.desired_nodes
@@ -116,4 +117,27 @@ resource "aws_eks_node_group" "team-cuttlefish-nodegroup" {
   tags = {
     team = var.team
   }
+}
+
+
+# We know that the public subnets are the first two and the private are the next two
+# At least in the current configuration
+resource "null_resource" "public_tagging_additions" {
+  count = length(var.cluster_public)
+  
+  provisioner "local-exec" {
+    command = "aws ec2 create-tags --resources ${var.cluster_public[count.index]} --tags Key=kubernetes.io/cluster/${var.cluster_name},Value=owned Key=kubernetes.io/role/elb,Value=1"
+  }
+
+  depends_on = [ aws_eks_cluster.project3-cluster ]
+}
+
+resource "null_resource" "private_tagging_additions" {
+  count = length(var.cluster_private)
+
+  provisioner "local-exec" {
+    command = "aws ec2 create-tags --resources ${var.cluster_private[count.index]} --tags Key=kubernetes.io/cluster/${var.cluster_name},Value=owned Key=kubernetes.io/role/internal-elb,Value=1"
+  }
+  
+  depends_on = [ aws_eks_cluster.project3-cluster ]
 }

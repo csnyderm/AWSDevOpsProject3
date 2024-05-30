@@ -26,10 +26,11 @@ variable "cluster_name" {
   default = "team-cuttlefish-cluster"
 }
 
-variable "subnet_ids" {
+variable "cluster_subnet_ids" {
   type = list(string)
   default = [1,2]
 }
+
 
 variable "cluster_auth_mode" {
   type = string
@@ -91,6 +92,11 @@ variable "nodegroup_name" {
   default = "team-cuttlefish-nodegroup"
 }
 
+variable "node_subnet_ids" {
+  type = list(string)
+  default = [1,2]
+}
+
 variable "desired_nodes" {
   type = number
   description = "The desired number of nodes to have at any time"
@@ -137,4 +143,16 @@ variable "nodes_ssh_key" {
   type = string
   description = "The SSH key used to access Nodes"
   default = "csnyder-kp-k8"
+}
+
+
+variable "cluster_public" {
+  type = list(string)
+  description = "The public subnets of the cluster"
+}
+
+
+variable "cluster_private" {
+  type = list(string)
+  description = "The private subnets of the cluster"
 }

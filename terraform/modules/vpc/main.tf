@@ -83,6 +83,10 @@ resource "aws_nat_gateway" "team-cuttle_nat" {
   depends_on    = [aws_subnet.public_subnets, aws_eip.nat_gateway_eip]
   allocation_id = aws_eip.nat_gateway_eip.id
   subnet_id     = aws_subnet.public_subnets["team-cuttlefish-public1"].id
+
+  tags = {
+    team = var.team
+  }
 }
 
 resource "aws_route_table" "private_route_table" {
