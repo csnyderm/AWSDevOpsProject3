@@ -27,6 +27,31 @@ output "cloudfront_domain_name" {
   value = module.cloudfront.cloudfront_domain_name
 }
 
-data "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "codepipeline-us-east-1-778398079089"
+variable "codebuild_service_role_arn" {
+  description = "IAM role ARN for CodeBuild"
+  type        = string
+}
+
+variable "codepipeline_role_arn" {
+  description = "IAM role ARN for CodePipeline"
+  type        = string
+}
+
+module "codecommit" {
+  source     = "./codecommit"
+  repo_names = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
+}
+
+module "codebuild" {
+  source        = "./codebuild"
+  project_names = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
+  service_role  = var.codebuild_service_role_arn
+  region        = "us-east-1"
+}
+
+module "codepipeline" {
+  source          = "./codepipeline"
+  pipeline_names  = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
+  role_arn        = var.codepipeline_role_arn
+  artifact_bucket = "codepipeline-us-east-1-778398079089"
 }
