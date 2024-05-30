@@ -31,7 +31,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.seAllowedOrigins(Arrays.asList("https://team-cuttlefish.aws-tfbd.com"));
+        configuration.setAllowedOrigins(Arrays.asList("https://team-cuttlefish.aws-tfbd.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("*"));

@@ -1,7 +1,7 @@
 app:
-  redirectUrl: https://frontend.skillstormcloud.com #change
-  logoutUrl: https://frontend.skillstormcloud.com
-  origin: https://frontend.skillstormcloud.com
+  redirectUrl: https://team-cuttlefish.aws-tfbd.com #changed
+  logoutUrl: https://team-cuttlefish.aws-tfbd.com
+  origin: https://team-cuttlefish.aws-tfbd.com
 
 
 server:
@@ -51,7 +51,7 @@ spring:
         add-to-simple-url-handler-mapping: "true"
         cors-configurations:
           '[/**]':
-            allowedOrigins: "https://frontend.skillstormcloud.com" #change
+            allowedOrigins: "https://team-cuttlefish.aws-tfbd.com" #changed
             allowedHeaders: "*"
             allowCredentials: true
             allowedMethods:
