@@ -1,0 +1,44 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo Updating apt-get...
+      - apt-get update -y
+      - apt-get install -y curl
+      - echo Installing kubectl...
+      - curl -L0 "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+      - echo Configuring kubectl...
+      - aws eks update-kubeconfig --region us-east-1 --name team-cuttlefish-cluster
+
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws)
+      - REPOSITORY_URI=public.ecr.aws/e2j5x1k4/tax
+      - IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}
+      
+      
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Build completed on `date`
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+
+  post_build:
+    commands:
+      - echo Pushing the Docker image...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Docker image pushed successfully
+      - echo Applying Kubernetes manifests...
+      # - kubectl apply -f deployment.yaml
+      # - kubectl apply -f service.yaml
+      # - echo Updating Kubernetes deployment...
+      # - kubectl set image deployment/<your-deployment-name> <container-name>=$REPOSITORY_URI:$IMAGE_TAG
+      # - kubectl rollout restart deployment/<your-deployment-name>

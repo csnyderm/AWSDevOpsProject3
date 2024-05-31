@@ -19,3 +19,11 @@ variable "cloudfront_origin_access_identity_arn" {
   description = "The ARN of the CloudFront Origin Access Identity"
   type        = string
 }
+
+variable "tags" {
+  description = "A map of tags to apply to all resources"
+  type        = map(string)
+  default     = {
+    team = "cuttlefish"
+  }
+}

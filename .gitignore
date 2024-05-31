@@ -12,6 +12,7 @@ terraform/.terraform*
 terraform/*.tfstate
 *.tfstate
 
+
 # All targets created due to MAVEN extension in VS Code
 API/target
 budget-planning/target

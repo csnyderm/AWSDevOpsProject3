@@ -20,7 +20,7 @@ import java.net.URI;
 
 @Controller
 @RequestMapping("/auth")
-@CrossOrigin(origins = "https://frontend.skillstormcloud.com", allowCredentials = "true")
+@CrossOrigin(origins = "https://team-cuttlefish.aws-tfbd.com", allowCredentials = "true") //Domain was changed
 //@CrossOrigin(origins = "${app.allowedOrigins}", allowCredentials = "true")
 public class AuthController {
 
