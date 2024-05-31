@@ -29,10 +29,22 @@ resource "aws_iam_policy" "codepipeline_policy" {
       {
         Effect   = "Allow",
         Action   = [
-          "codebuild:StartBuild",
           "s3:GetObject",
           "cloudwatch:PutMetricData",
-          "eks:DescribeCluster"
+          "eks:DescribeCluster", 
+          "codebuild:BatchGetBuilds",
+          "codebuild:StartBuild",
+          "codebuild:StopBuild", 
+          "codecommit:BatchGet*",
+          "codecommit:BatchDescribe*",
+          "codecommit:Describe*",
+          "codecommit:EvaluatePullRequestApprovalRules",
+          "codecommit:Get*",
+          "codecommit:List*",
+          "codecommit:GitPull",
+          "codecommit:GitPush", 
+          "codecommit:ListRepositories",
+          "codecommit:BatchGetRepositories"
         ],
         Resource = "*"
       }
@@ -73,9 +85,30 @@ resource "aws_iam_policy" "codebuild_policy" {
         Effect   = "Allow",
         Action   = [
           "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:PutObject",
+          "s3:ListBucket"
           "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr-public:GetAuthorizationToken",
+          "sts:GetServiceBearerToken",
+          "ecr-public:BatchCheckLayerAvailability",
+          "ecr-public:GetRepositoryPolicy",
+          "ecr-public:DescribeRepositories",
+          "ecr-public:DescribeRegistries",
+          "ecr-public:DescribeImages",
+          "ecr-public:DescribeImageTags",
+          "ecr-public:GetRepositoryCatalogData",
+          "ecr-public:GetRegistryCatalogData",
+          "ecr-public:InitiateLayerUpload",
+          "ecr-public:UploadLayerPart",
+          "ecr-public:CompleteLayerUpload",
+          "ecr-public:PutImage",
           "cloudwatch:PutMetricData",
           "documentdb:DescribeDBClusters"
+          "codebuild:BatchGetBuilds",
+          "codebuild:StartBuild",
+          "codebuild:StopBuild",
         ],
         Resource = "*"
       }
