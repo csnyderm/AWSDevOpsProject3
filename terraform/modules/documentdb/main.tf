@@ -18,6 +18,7 @@ resource "aws_security_group" "documentdb_sg" {
 
     tags = {
         Name = "Team-Cuttlefish Security Group"
+        team = var.team
     }
 }
 

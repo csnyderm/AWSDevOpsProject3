@@ -8,6 +8,7 @@ resource "aws_route53_record" "hosted_zone_id" {
   type    = "A"
 
   alias {
+    #? What? Shouldn't this just be
     name                   = module.cloudfront.cloudfront_domain_name
     zone_id                = "Z2FDTNDATAQYW2"  # CloudFront hosted zone ID (global)
     evaluate_target_health = false

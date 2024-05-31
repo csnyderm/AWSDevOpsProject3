@@ -150,6 +150,6 @@ resource "null_resource" "setup_alb" {
     ]
   
   provisioner "local-exec" {
-    command = "bash ${var.alb_setup_script} ${var.cluster_name} ${var.aws_region} ${alb_policy}"
+    command = "bash ${var.alb_setup_script} ${var.cluster_name} ${var.aws_region} ${var.alb_policy}"
   }
 }

@@ -49,8 +49,7 @@ variable "tls_enabled" {
 }
 
 variable "vpc_id" {
-  type = bool
-  default = false
+  type = string
 }
 
 variable "tags" {
@@ -60,4 +59,9 @@ variable "tags" {
 variable "cluster_family" {
   type = string
   default = "docdb4.0"
+}
+
+variable "team" {
+  type = string
+  default = "cuttlefish"
 }
