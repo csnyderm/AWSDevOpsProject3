@@ -6,10 +6,12 @@ phases:
       java: corretto17
   pre_build:
     commands:
-      - echo Updating apt-get...
-      - apt-get update -y
+      - echo Updating yum...
+      - yum update -y
       - echo Installing dependencies...
-      - npm install npm@8.19.4
+      - curl -sL https://rpm.nodesource.com/setup_16.x | bash -
+      - yum install -y nodejs
+      - npm install -g npm@8.19.4
       - npm install typescript
       - npm install react react-dom react-router-dom
 
