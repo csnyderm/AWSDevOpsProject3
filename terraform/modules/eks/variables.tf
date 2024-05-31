@@ -160,5 +160,5 @@ variable "alb_policy" {
 variable "alb_setup_script" {
   type = string
   description = "The path, absolute or relative, to the ALB setup script"
-  default = "./modules/eks/demo.sh"
+  default = "./setup_alb"
 }
