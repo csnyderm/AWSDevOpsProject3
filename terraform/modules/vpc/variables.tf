@@ -3,6 +3,11 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
+variable "team" {
+  type    = string
+  default = "cuttlefish"
+}
+
 variable "vpc_cidr" {
   type    = string
   default = "10.0.0.0/16"
@@ -10,26 +15,27 @@ variable "vpc_cidr" {
 
 variable "vpc_name" {
   type    = string
-  default = "team-cuttlefish_vpc"
+  default = "team-cuttlefish-vpc"
 }
 
 variable "private_subnets" {
   default = {
-    "team-cuttlefish_private1" = 1
-    "team-cuttlefish_private2" = 2
+    "team-cuttlefish-private1" = 1
+    "team-cuttlefish-private2" = 2
+    "team-cuttlefish-private3" = 3
   }
 }
 
 variable "public_subnets" {
   default = {
-    "team-cuttlefish_public1" = 1
-    "team-cuttlefish_public2" = 2
+    "team-cuttlefish-public1" = 1
+    "team-cuttlefish-public2" = 2
   }
 }
 
 variable "eks_sg_name" {
-  type = string
-  default = "team-cuttlefish_eks_sg"
+  type    = string
+  default = "team-cuttlefish-eks-sg"
 }
 
 # One option for how to do this. Saving in case I go back to it.

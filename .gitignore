@@ -2,11 +2,16 @@
 terraform/modules/*/.terraform
 terraform/modules/*/.terraform.lock.hcl
 terraform/modules/*/terraform.tfstate
+terraform/modules/*/terraform.tfstate*
 terraform/modules/*/.terraform*
 terraform/.terraform
 terraform/.terraform.lock.hcl
 terraform/.terraform.tfstate
+terraform/terraform.tfstate*
 terraform/.terraform*
+terraform/*.tfstate
+*.tfstate
+
 
 # All targets created due to MAVEN extension in VS Code
 API/target
@@ -14,3 +19,9 @@ budget-planning/target
 investments/target
 tax-estimator/target
 account-management/target
+eureka/target
+
+## Files for debugging during testing
+terraform/modules/*/*.pem
+terraform/modules/*/*.txt
+terraform/modules/*/*.json
