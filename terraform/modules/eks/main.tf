@@ -141,3 +141,15 @@ resource "null_resource" "private_tagging_additions" {
   
   depends_on = [ aws_eks_cluster.project3-cluster ]
 }
+
+resource "null_resource" "setup_alb" {
+
+  depends_on = [ # Wait for the node group AND all addons to be up, to make sure that we have the nodes active
+    aws_eks_node_group.team-cuttlefish-nodegroup, # The node group needs to be up
+    aws_eks_addon.cni_addon, aws_eks_addon.observability_addon, aws_eks_addon.coredns_addon, aws_eks_addon.podidentity_addon, aws_eks_addon.kubeproxy_addon, # Wait on the addons
+    ]
+  
+  provisioner "local-exec" {
+    command = "bash ${var.alb_setup_script} ${var.cluster_name} ${var.aws_region} ${alb_policy}"
+  }
+}

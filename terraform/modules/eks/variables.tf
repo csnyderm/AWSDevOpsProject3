@@ -150,3 +150,15 @@ variable "node_group_security_group" {
   type = list(string)
   description = "The security group to use for the node group"
 }
+
+#! Necessary from IAM
+variable "alb_policy" {
+  type = string
+  description = "The ARN of the policy to attach to the ALB service account"
+}
+
+variable "alb_setup_script" {
+  type = string
+  description = "The path, absolute or relative, to the ALB setup script"
+  default = "./modules/eks/demo.sh"
+}

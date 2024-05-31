@@ -18,4 +18,8 @@ module "eks_module" {
   #! These two are required
   cluster_public = tolist(module.vpc_module.public_subnet_ids)
   cluster_private = tolist(slice(module.vpc_module.private_subnet_ids, 0, 2))
+
+  #! For the ALB script
+  alb_policy = "arn:aws:iam::785169158894:policy/AWSLoadBalancerControllerIAMPolicy"
+  #alb_setup_script = 
 }
