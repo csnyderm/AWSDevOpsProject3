@@ -5,6 +5,7 @@ resource "aws_ecrpublic_repository" "account-management" {
 
   tags = {
     env = "production"
+    team = var.team
   }
 }
 
