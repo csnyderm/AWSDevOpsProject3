@@ -23,7 +23,12 @@ variable "cloudfront_origin_access_identity_arn" {
 variable "tags" {
   description = "A map of tags to apply to all resources"
   type        = map(string)
-  default     = {
+  default = {
     team = "cuttlefish"
   }
+}
+
+variable "cloudfront_prefix_list" {
+  type    = string
+  default = "pl-3b927c52"
 }

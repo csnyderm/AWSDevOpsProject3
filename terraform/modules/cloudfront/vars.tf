@@ -9,6 +9,16 @@ variable "aliases" {
   default     = []
 }
 
+variable "hosted_zone_id" {
+  type    = string
+  default = "Z2FDTNDATAQYW2"
+}
+
+variable "record_name" {
+  type    = string
+  default = "frontend.aws-tfbd.com"
+}
+
 variable "acm_certificate_arn" {
   description = "The ARN of the ACM certificate to use for SSL"
   type        = string
@@ -35,7 +45,7 @@ variable "response_headers_policy_name" {
 variable "tags" {
   description = "A map of tags to apply to all resources"
   type        = map(string)
-  default     = {
+  default = {
     team = "cuttlefish"
   }
 }
