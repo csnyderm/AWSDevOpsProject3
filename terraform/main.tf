@@ -3,6 +3,17 @@ provider "aws" {
 }
 
 
+#? This file will be in order of operation
+
+/*
+module "iam" {
+  source = "./modules/iam"
+}
+
+module "cognito" {
+  source = "./modules/cognito"
+}
+*/
 
 module "cloudfront" {
   source              = "./modules/cloudfront"
@@ -44,7 +55,8 @@ module "eks_module" {
 
   #! For the ALB script
   alb_policy = "arn:aws:iam::785169158894:policy/AWSLoadBalancerControllerIAMPolicy"
-  #alb_setup_script = 
+  #? Will this work or do we need to give a different relative path?
+  alb_setup_script = "./setup_alb.sh"
 }
 
 #! We shouldn't have outputs and variables in main.
@@ -68,39 +80,48 @@ variable "codepipeline_role_arn" {
   type        = string
 }
 */
-module "codecommit" {
-  source     = "./codecommit"
-  repo_names = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
-}
-
-module "codebuild" {
-  source        = "./codebuild"
-  project_names = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
-  service_role  = var.codebuild_service_role_arn
-  region        = "us-east-1"
-}
-
-module "codepipeline" {
-  source          = "./codepipeline"
-  pipeline_names  = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
-  role_arn        = var.codepipeline_role_arn
-  artifact_bucket = "codepipeline-us-east-1-778398079089"
-
-  depends_on = [ module.codebuild ]
-}
 
 
-
-#? Elton's modules here
-#? This includes DocumentDB, ECR, and Cognito
 
 module "documentdb" {
   source = "./modules/documentdb"
   vpc_id = module.vpc_module.vpc_id
-  subnet_ids = [module.vpc_module.private_subnet_ids[-1]]
+  subnet_ids = [ element(module.vpc_module.private_subnet_ids, 2) ]
   cluster_name = "team-cuttlefish-docdb"
-  security_groups = []
-  tags = {
+  security_groups = [] # Add
+  tags = { # Adjust as needed
     team = var.team
   }
+}
+
+module "codecommit" {
+  source     = "./modules/codecommit"
+  repo_names = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
+}
+
+module "ecr" {
+  source = "./modules/ecr"
+  depends_on = [ module.codecommit ]
+}
+
+module "codebuild" {
+  source        = "./modules/codebuild"
+  project_names = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
+  service_role  = "" #var.codebuild_service_role_arn # Placeholder, replace
+  region        = "us-east-1"
+  depends_on = [ module.codecommit, module.ecr ]
+}
+
+
+module "codepipeline" {
+  source          = "./modules/codepipeline"
+  pipeline_names  = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
+  role_arn        = "" # var.codepipeline_role_arn # Placeholder, replace
+  artifact_bucket = "codepipeline-us-east-1-778398079089"
+    #? Should the artifact bucket be built into the CodePipeline creation process?
+    #? Does it automatically create one if given the name?
+    #?
+
+  # Because it depends on CodeBuild, which depends on Commit/ECR, it implicitly relies on them as well
+  depends_on = [ module.codebuild, module.iam ]
 }
