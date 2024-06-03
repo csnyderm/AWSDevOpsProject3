@@ -2,6 +2,43 @@ provider "aws" {
   region = var.aws_region
 }
 
+# IAM User for CodeCommit
+resource "aws_iam_user" "codecommit_user" {
+  name = "team-cuttlefish-codecommit-user"
+
+  tags = {
+    team = "cuttlefish"
+  }
+}
+
+resource "aws_iam_user_policy" "codecommit_policy" {
+  name = "team-cuttlefish-codecommit-policy"
+  user = aws_iam_user.codecommit_user.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "codecommit:GitPull",
+          "codecommit:GitPush",
+          "codecommit:ListRepositories",
+          "codecommit:BatchGetRepositories"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_user_ssh_key" "codecommit_ssh_key" {
+  username   = aws_iam_user.codecommit_user.name
+  public_key = file("~/.ssh/id_rsa.pub")
+  encoding   = "SSH"
+}
+
+# CodePipeline Role and Policy
 resource "aws_iam_role" "codepipeline_role" {
   name = "CodePipelineRole"
 
@@ -27,8 +64,8 @@ resource "aws_iam_policy" "codepipeline_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "s3:GetObject",
           "cloudwatch:PutMetricData",
           "eks:DescribeCluster", 
@@ -57,6 +94,7 @@ resource "aws_iam_role_policy_attachment" "codepipeline_policy_attach" {
   policy_arn = aws_iam_policy.codepipeline_policy.arn
 }
 
+# CodeBuild Role and Policy
 resource "aws_iam_role" "codebuild_role" {
   name = "CodeBuildRole"
 
@@ -82,12 +120,12 @@ resource "aws_iam_policy" "codebuild_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "s3:GetObject",
           "s3:GetObjectVersion",
           "s3:PutObject",
-          "s3:ListBucket"
+          "s3:ListBucket",
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
           "ecr-public:GetAuthorizationToken",
@@ -105,10 +143,10 @@ resource "aws_iam_policy" "codebuild_policy" {
           "ecr-public:CompleteLayerUpload",
           "ecr-public:PutImage",
           "cloudwatch:PutMetricData",
-          "documentdb:DescribeDBClusters"
+          "documentdb:DescribeDBClusters",
           "codebuild:BatchGetBuilds",
           "codebuild:StartBuild",
-          "codebuild:StopBuild",
+          "codebuild:StopBuild"
         ],
         Resource = "*"
       }
@@ -121,6 +159,7 @@ resource "aws_iam_role_policy_attachment" "codebuild_policy_attach" {
   policy_arn = aws_iam_policy.codebuild_policy.arn
 }
 
+# EKS Cluster Role and Policy
 resource "aws_iam_role" "eks_role" {
   name = "EKSClusterRole"
 
@@ -137,6 +176,7 @@ resource "aws_iam_role" "eks_role" {
     ]
   })
 }
+
 resource "aws_iam_policy" "eks_cluster_policy" {
   name        = "EKSClusterPolicy"
   description = "Policy for EKS Cluster Role"
@@ -145,8 +185,8 @@ resource "aws_iam_policy" "eks_cluster_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "ec2:DescribeInstances",
           "ec2:DescribeNetworkInterfaces",
           "ec2:DescribeSecurityGroups",
@@ -183,8 +223,11 @@ resource "aws_iam_policy" "eks_cluster_policy" {
     ]
   })
 }
+
+# EKS NodeGroup Role
 resource "aws_iam_role" "eks_nodegroup_role" {
   name = "AmazonEKSNodeRole"
+  
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -219,6 +262,7 @@ resource "aws_iam_role_policy_attachment" "ec2_container_registry_read_only" {
   role       = aws_iam_role.eks_nodegroup_role.name
 }
 
+# S3 Role and Policy
 resource "aws_iam_role" "s3_role" {
   name = "S3Role"
 
@@ -244,8 +288,8 @@ resource "aws_iam_policy" "s3_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "s3:PutObject",
           "cloudfront:CreateInvalidation"
         ],
@@ -260,6 +304,7 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attach" {
   policy_arn = aws_iam_policy.s3_policy.arn
 }
 
+# Cognito Role and Policy
 resource "aws_iam_role" "cognito_role" {
   name = "CognitoRole"
 
@@ -285,8 +330,8 @@ resource "aws_iam_policy" "cognito_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "cognito-idp:ListUsers",
           "cloudwatch:PutMetricData"
         ],
@@ -301,6 +346,7 @@ resource "aws_iam_role_policy_attachment" "cognito_policy_attach" {
   policy_arn = aws_iam_policy.cognito_policy.arn
 }
 
+# Route 53 Role and Policy
 resource "aws_iam_role" "route53_role" {
   name = "Route53Role"
 
@@ -326,8 +372,8 @@ resource "aws_iam_policy" "route53_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "route53:ChangeResourceRecordSets"
         ],
         Resource = "*"
