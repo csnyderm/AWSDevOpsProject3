@@ -113,13 +113,13 @@ variable "node_disk_size" {
 variable "node_instance_pricing" {
   type = string
   description = "The pricing model for the instances. Valid: ON_DEMAND, SPOT"
-  default = "SPOT"
+  default = "ON-DEMAND"
 }
 
 variable "node_instance_types" {
   type = list(string)
   description = "The instance types to utilize when creating nodes. Perferably, keep this to a single value"
-  default = ["m5.large"]
+  default = ["t3.medium"]
 }
 
 #! Consider removing

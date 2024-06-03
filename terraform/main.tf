@@ -15,6 +15,8 @@ module "cognito" {
 }
 */
 
+#! Might need Data for Cognito, otherwise omit
+
 module "cloudfront" {
   source              = "./modules/cloudfront"
   origin_bucket       = module.s3_static_website.bucket_name
@@ -22,6 +24,8 @@ module "cloudfront" {
   aliases             = ["team-cuttlefish.aws-tfbd.com"]
   
 }
+
+#! Replace all instances of team-cuttlefish with frontend in the alias
 
 
 module "s3_static_website" {
