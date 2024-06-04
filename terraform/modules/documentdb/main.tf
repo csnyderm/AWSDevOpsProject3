@@ -41,6 +41,7 @@ resource "aws_docdb_cluster" "cuttlefish_db" {
   db_subnet_group_name   = aws_docdb_subnet_group.cuttlefish_subnetgrp.name
   vpc_security_group_ids = [aws_security_group.documentdb_sg.id]
   tags                   = var.tags
+  db_cluster_parameter_group_name = aws_docdb_cluster_parameter_group.cuttlefish_pg.name
 }
 
 

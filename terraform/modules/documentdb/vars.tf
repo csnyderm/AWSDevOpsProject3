@@ -63,7 +63,7 @@ variable "tags" {
 
 variable "cluster_family" {
   type    = string
-  default = "docdb4.0"
+  default = "docdb5.0"
 }
 
 variable "team" {

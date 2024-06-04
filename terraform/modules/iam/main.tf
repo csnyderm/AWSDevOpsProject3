@@ -61,6 +61,9 @@ resource "aws_iam_policy" "route53_policy" {
        ],
        Resource = "*"
      }
+]})
+}
+
 resource "aws_iam_role_policy_attachment" "route53_policy_attach" {
   role       = aws_iam_role.route53_role.name
   policy_arn = aws_iam_policy.route53_policy.arn
