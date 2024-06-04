@@ -28,11 +28,10 @@ variable "cluster_auth_mode" {
   type    = string
   default = "API_AND_CONFIG_MAP"
 }
-
-#? Required value
+/*
 variable "cluster_security_group" {
   type = list(string)
-}
+}*/
 
 variable "cluster_role" {
   type = string
@@ -159,6 +158,7 @@ variable "cluster_private" {
   description = "The private subnets of the cluster"
 }
 
+/*
 #? Required value
 #! Update this either adding the SG in EKS or in VPC.
 #! This needs to allow port 80 and 43, I believe
@@ -166,7 +166,7 @@ variable "cluster_private" {
 variable "node_group_security_group" {
   type        = list(string)
   description = "The security group to use for the node group"
-}
+}*/
 
 #! Necessary from IAM
 variable "alb_policy" {

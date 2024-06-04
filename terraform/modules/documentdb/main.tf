@@ -13,7 +13,7 @@ resource "aws_security_group" "documentdb_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0,0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   description = "Team-Cuttlefish DocumentDB Security Group"
@@ -22,6 +22,16 @@ resource "aws_security_group" "documentdb_sg" {
     team = var.team
   }
 }
+
+resource "aws_security_group_rule" "Allow ingress from db" {
+  security_group_id = var.ingress_sg
+  type = "ingress"
+  from_port = 0
+  to_port = 65535
+  protocol = "tcp"
+  source_security_group_id = aws_security_group.documentdb_sg.id
+}
+
 
 resource "aws_docdb_subnet_group" "cuttlefish_subnetgrp" {
   name       = "${var.cluster_name}-subnet-group"

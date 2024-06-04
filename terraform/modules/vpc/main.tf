@@ -138,7 +138,7 @@ resource "aws_route_table_association" "private3_association" {
 }
 
 
-
+/*
 resource "aws_security_group" "eks_sg" {
   name        = var.eks_sg_name
   description = "Allows traffic and connection to EKS cluster from approved sources"
@@ -149,7 +149,8 @@ resource "aws_security_group" "eks_sg" {
     team = var.team
   }
 }
-
+*/
+/*
 resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
   security_group_id = aws_security_group.eks_sg.id
   cidr_ipv4         = "0.0.0.0/0" # Narrow later
@@ -165,7 +166,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http" {
   to_port           = 80
   ip_protocol       = "tcp"
 }
-
+*/
 
 # One method on how to do this. Saving in case I go back to it later.
 /*

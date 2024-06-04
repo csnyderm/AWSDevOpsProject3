@@ -60,11 +60,12 @@ variable "private_rt_name" {
   default = "team-cuttlefish-priv-rt"
 }
 
+/*
 variable "eks_sg_name" {
   type    = string
   default = "team-cuttlefish-eks-sg"
 }
-
+*/
 # One option for how to do this. Saving in case I go back to it.
 /*
 variable "eks_sg_ingress" {

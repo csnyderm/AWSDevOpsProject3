@@ -8,3 +8,7 @@ output "cluster_name" {
 }
 
 #! MARKED FOR DELETION ?
+
+output "test" {
+  value = module.cloudwatch
+}

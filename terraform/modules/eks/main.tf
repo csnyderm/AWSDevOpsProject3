@@ -6,7 +6,7 @@ resource "aws_eks_cluster" "project3-cluster" {
   vpc_config {
     #subnet_ids = var.subnet_ids
     subnet_ids         = var.cluster_subnet_ids
-    security_group_ids = var.cluster_security_group
+    #security_group_ids = var.cluster_security_group
   }
 
   access_config {

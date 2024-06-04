@@ -48,8 +48,8 @@ module "eks_module" {
   #! These can be found at the bottom of the eks main.tf document
 
   node_subnet_ids           = module.vpc_module.public_subnet_ids
-  cluster_security_group    = [module.vpc_module.cluster_security_group]
-  node_group_security_group = [module.vpc_module.cluster_security_group]
+  #cluster_security_group    = [module.vpc_module.cluster_security_group]
+  #node_group_security_group = [module.vpc_module.cluster_security_group]
   #cluster_role = "arn:aws:iam::785169158894:role/EKSClusterRoleDemo" # Update with value from IAM
   cluster_role = module.iam.eks_cluster_role_arn
 
@@ -74,7 +74,7 @@ module "documentdb" {
   vpc_id          = module.vpc_module.vpc_id
   subnet_ids      = [element(module.vpc_module.private_subnet_ids, 2)]
   cluster_name    = var.ddb_cluster_name
-  ingress_sg = module.vpc_module.cluster_security_group
+  ingress_sg = module.eks_module.cluster_sg
   tags = {             # Adjust as needed
     team = var.team
   }
