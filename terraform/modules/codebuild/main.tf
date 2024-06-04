@@ -32,8 +32,6 @@ environment_variable {
       value = var.region
     }
   }
-
-  environment_variable
   source {
     type      = "CODECOMMIT"
     location  = "https://git-codecommit.${var.region}.amazonaws.com/v1/repos/${var.project_names[count.index]}"
