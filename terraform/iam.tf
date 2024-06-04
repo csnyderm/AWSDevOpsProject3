@@ -1,3 +1,5 @@
+#! MARKED FOR DELETION
+
 # for codebuild and codepipeline roles
 resource "aws_iam_role" "codebuild_role" {
   name = "codebuild_role"

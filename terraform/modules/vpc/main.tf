@@ -1,16 +1,11 @@
-provider "aws" {
-  # Configuration options
-  region = "us-east-1"
-}
 
 
 resource "aws_vpc" "team-cuttlefish_vpc" {
   cidr_block = var.vpc_cidr
 
   tags = {
-    Name   = var.vpc_name
-    region = var.aws_region
-    team   = var.team
+    Name = var.vpc_name
+    team = var.team
   }
 }
 
@@ -43,12 +38,15 @@ resource "aws_internet_gateway" "team-cuttlefish_igw" {
   vpc_id = aws_vpc.team-cuttlefish_vpc.id
 
   tags = {
-    Name = "team-cuttlefish-igw"
+    Name = var.igw_name
     team = var.team
   }
 }
 
 resource "aws_route_table" "public_route_table" {
+
+  depends_on = [aws_internet_gateway.team-cuttlefish_igw]
+
   vpc_id = aws_vpc.team-cuttlefish_vpc.id
 
   route {
@@ -56,62 +54,85 @@ resource "aws_route_table" "public_route_table" {
     gateway_id = aws_internet_gateway.team-cuttlefish_igw.id
   }
   tags = {
-    Name = "public-rtb" # Maybe variable
+    Name = var.public_rt_name # Maybe variable
     team = var.team
   }
 }
 
+
+#? Going to leave these two, but I really should have made it a loop
 resource "aws_route_table_association" "public1_association" {
+
+  depends_on = [aws_route_table.public_route_table, aws_subnet.public_subnets]
+
   subnet_id      = aws_subnet.public_subnets["team-cuttlefish-public1"].id
   route_table_id = aws_route_table.public_route_table.id
 }
 
 resource "aws_route_table_association" "public2_association" {
+
+  depends_on = [aws_route_table.public_route_table, aws_subnet.public_subnets]
+
   subnet_id      = aws_subnet.public_subnets["team-cuttlefish-public2"].id
   route_table_id = aws_route_table.public_route_table.id
 }
 
 resource "aws_eip" "nat_gateway_eip" {
   tags = {
-    Name = "team-cuttlefish-eip"
+    Name = var.eip_name
     team = var.team
   }
 }
 
 
 resource "aws_nat_gateway" "team-cuttle_nat" {
-  depends_on    = [aws_subnet.public_subnets, aws_eip.nat_gateway_eip]
+  depends_on = [aws_subnet.public_subnets, aws_eip.nat_gateway_eip]
+
   allocation_id = aws_eip.nat_gateway_eip.id
   subnet_id     = aws_subnet.public_subnets["team-cuttlefish-public1"].id
 
   tags = {
+    Name = var.nat_name
     team = var.team
   }
 }
 
 resource "aws_route_table" "private_route_table" {
+
+  depends_on = [aws_vpc.team-cuttlefish_vpc, aws_nat_gateway.team-cuttle_nat]
+
   vpc_id = aws_vpc.team-cuttlefish_vpc.id
   route {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.team-cuttle_nat.id
   }
   tags = {
-    Name = "team-cuttlefish-natrtb"
+    Name = var.private_rt_name
     team = var.team
   }
 }
 
+#? Going to leave these but it should be a loop
 resource "aws_route_table_association" "private1_association" {
+
+  depends_on = [aws_subnet.private_subnets, aws_route_table.private_route_table]
+
   subnet_id      = aws_subnet.private_subnets["team-cuttlefish-private1"].id
   route_table_id = aws_route_table.private_route_table.id
 }
 
 resource "aws_route_table_association" "private2_association" {
+
+  depends_on = [aws_subnet.private_subnets, aws_route_table.private_route_table]
+
   subnet_id      = aws_subnet.private_subnets["team-cuttlefish-private2"].id
   route_table_id = aws_route_table.private_route_table.id
 }
 
 resource "aws_route_table_association" "private3_association" {
+
+  depends_on = [aws_subnet.private_subnets, aws_route_table.private_route_table]
+
   subnet_id      = aws_subnet.private_subnets["team-cuttlefish-private3"].id
   route_table_id = aws_route_table.private_route_table.id
 }

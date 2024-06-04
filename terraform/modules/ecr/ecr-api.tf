@@ -1,4 +1,4 @@
-
+#! MARKED FOR DELETION
 resource "aws_ecrpublic_repository" "api" {
   repository_name = "api"
 

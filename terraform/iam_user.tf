@@ -1,3 +1,5 @@
+#! MARKED FOR DELETION
+
 resource "aws_iam_user" "codecommit_user" {
   name = "team-cuttlefish-codecommit-user"
 

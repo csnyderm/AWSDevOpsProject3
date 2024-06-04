@@ -1,3 +1,5 @@
+#! MARKED FOR DELETION
+
 terraform {
   required_providers {
     aws = {
@@ -12,25 +14,25 @@ provider "aws" {
 }
 
 resource "aws_security_group" "team_cuttlefish_sg" {
-  name = "team_cuttlefish_sg"
-  vpc_id = aws_vpc.vpc.id 
+  name   = "team_cuttlefish_sg"
+  vpc_id = aws_vpc.vpc.id
 
   ingress {
     from_port = 443
-    to_port = 443
-    protocol = "tcp"
+    to_port   = 443
+    protocol  = "tcp"
   }
 
   ingress {
     from_port = 80
-    to_port = 80
-    protocol = "tcp"
+    to_port   = 80
+    protocol  = "tcp"
   }
 
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = 0
+    from_port   = 0
+    to_port     = 0
+    protocol    = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
 }

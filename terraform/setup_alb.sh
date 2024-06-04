@@ -16,14 +16,15 @@ if [[ $# -lt 3 ]]; then
   echo "Please provide the policy ARN to attach: "
   read policy_arn
 
-  # Start by switching into the context, just to be safe. Also, ensure the iam oidc is associated, to be sure
-  aws eks update-kubeconfig --region $aws_region --name $cluster_name
-  eksctl utils associate-iam-oidc-provider --region $aws_region --cluster $cluster_name --approve
 else
   cluster_name=$1
   aws_region=$2
   policy_arn=$3
 fi
+
+# Start by switching into the context, just to be safe. Also, ensure the iam oidc is associated, to be sure
+aws eks update-kubeconfig --region $aws_region --name $cluster_name
+eksctl utils associate-iam-oidc-provider --region $aws_region --cluster $cluster_name --approve
 
 # Next, create the IAM service account - Use this block if we are using the default
 #curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/install/iam_policy.json

@@ -1,3 +1,5 @@
+#! MARKED FOR DELETION
+
 resource "aws_ecrpublic_repository" "account-management" {
   repository_name = "account-management"
 

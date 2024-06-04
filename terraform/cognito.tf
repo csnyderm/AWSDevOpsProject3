@@ -1,3 +1,5 @@
+#! MARKED FOR DELETION
+
 resource "aws_cognito_user_pool" "team_cuttlefish_pool" {
   name                     = "team-cuttlefish-pool"
   auto_verified_attributes = ["email", "phone_number"]
@@ -11,7 +13,7 @@ resource "aws_cognito_user_pool" "team_cuttlefish_pool" {
     require_symbols   = true
   }
 
-    account_recovery_setting {
+  account_recovery_setting {
     recovery_mechanism {
       name     = "verified_email"
       priority = 1
@@ -52,10 +54,10 @@ resource "aws_cognito_user_pool_client" "team_cuttlefish_client" {
 }
 
 resource "aws_cognito_user_pool_domain" "team_cuttlefish_domain" {
-  domain       = "team-cuttlefish-domain"
-  user_pool_id = aws_cognito_user_pool.team_cuttlefish_pool.id
-  certificate_arn = aws_acm_certificate.team_cuttlefish_cert.arn
-  cloudfront_distribution = "doexvkza8jlwz.cloudfront.net"
-  cloudfront_distribution_arn = "arn:aws:cloudfront::785169158894:distribution/E1V5LUPIOTZWHQ"
+  domain                          = "team-cuttlefish-domain"
+  user_pool_id                    = aws_cognito_user_pool.team_cuttlefish_pool.id
+  certificate_arn                 = aws_acm_certificate.team_cuttlefish_cert.arn
+  cloudfront_distribution         = "doexvkza8jlwz.cloudfront.net"
+  cloudfront_distribution_arn     = "arn:aws:cloudfront::785169158894:distribution/E1V5LUPIOTZWHQ"
   cloudfront_distribution_zone_id = "E1V5LUPIOTZWHQ"
 }

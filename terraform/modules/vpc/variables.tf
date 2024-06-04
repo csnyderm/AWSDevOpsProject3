@@ -33,6 +33,33 @@ variable "public_subnets" {
   }
 }
 
+
+variable "igw_name" {
+  type    = string
+  default = "team-cuttlefish-igw"
+}
+
+
+variable "public_rt_name" {
+  type    = string
+  default = "team-cuttlefish-pub-rt"
+}
+
+variable "eip_name" {
+  type    = string
+  default = "team-cuttlefish-eip"
+}
+
+variable "nat_name" {
+  type    = string
+  default = "team-cuttlefish-nat"
+}
+
+variable "private_rt_name" {
+  type    = string
+  default = "team-cuttlefish-priv-rt"
+}
+
 variable "eks_sg_name" {
   type    = string
   default = "team-cuttlefish-eks-sg"
