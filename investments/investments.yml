@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: investments-service
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8084
+  selector:
+    app: investments
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: investments
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: investments
+  template:
+    metadata:
+      labels:
+        app: investments
+    spec:
+      containers:
+        - name: investments
+          image: public.ecr.aws/e2j5x1k4/investments:latest
+          ports:
+            - containerPort: 8084
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service.default.svc.cluster.local:8761/eureka/
+            - name: EUREKA_INSTANCE_PREFERIPADDRESS
+              value: "true"

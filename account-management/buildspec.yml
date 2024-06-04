@@ -19,7 +19,7 @@ phases:
       - aws --version
       - export ECR_LOGIN_PASSWORD=$(aws ecr-public get-login-password --region us-east-1)
       - echo $ECR_LOGIN_PASSWORD | docker login --username AWS --password-stdin public.ecr.aws
-      - REPOSITORY_URI=public.ecr.aws/e2j5x1k4/account-management #change 
+      - REPOSITORY_URI=public.ecr.aws/e2j5x1k4/account-management
       - echo Configuring kubectl...
       - aws eks update-kubeconfig --region us-east-1 --name team-cuttlefish-cluster
 
@@ -36,7 +36,11 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - echo Docker image pushed successfully
       - echo Applying Kubernetes manifests...
-      # - kubectl apply -f manifest.yaml
-      # - echo Updating Kubernetes deployment...
-      # - kubectl set image deployment/<your-deployment-name> <container-name>=$REPOSITORY_URI:lastest
-      # - kubectl rollout restart deployment/<your-deployment-name>
+      - kubectl apply -f account-management.yml --validate=false
+      - echo Updating Kubernetes deployment...
+      - kubectl set image deployment/account-management account-management=$REPOSITORY_URI:latest
+      - kubectl rollout restart deployment/account-management
+
+artifacts:
+  files:
+    - '**/*'

@@ -1,5 +1,5 @@
 # Use the official Maven image from Docker Hub as the build stage
-FROM maven:3.8.4-openjdk-17 as build
+FROM public.ecr.aws/e2j5x1k4/builds:maven as build
 
 # Set the working directory in the container
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY . /app/
 RUN mvn clean install -DskipTests
 
 # Use the official OpenJDK image from Docker Hub for the final image
-FROM openjdk:17-jdk-slim
+FROM public.ecr.aws/e2j5x1k4/builds:java
 
 WORKDIR /app
 

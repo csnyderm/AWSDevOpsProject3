@@ -23,7 +23,7 @@ export default function TopNav() {
 
   const handleSignIn = () => {
     //dispatch(login(userData.email));
-    window.location.replace("https://api.skillstormcloud.com/auth/login"); //needs to change so that it know where to point it to
+    window.location.replace("https://api.aws-tfbd.com/auth/login");
     //window.location.replace("http://localhost:8125/auth/login");
   };
 
@@ -32,7 +32,7 @@ export default function TopNav() {
     dispatch(logout());
     //window.location.replace("http://localhost:8125/auth/logout");
     window.location.replace(
-      "https://api.skillstormcloud.com/auth/logout" //needs to change so that it know where to point it to
+      "https://api.aws-tfbd.com/auth/logout"
     );
   };
 

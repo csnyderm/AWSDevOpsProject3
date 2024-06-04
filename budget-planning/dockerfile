@@ -1,4 +1,4 @@
-FROM public.ecr.aws/c1x4i8c4/alpine:latest
+FROM public.ecr.aws/e2j5x1k4/builds:java
 
 WORKDIR /app
 

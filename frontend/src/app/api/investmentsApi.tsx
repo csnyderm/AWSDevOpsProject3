@@ -21,7 +21,7 @@ export const investmentsApi = createApi({
   baseQuery: fetchBaseQuery({
     credentials: "include",
     //baseUrl: " http://localhost:8125/investments",
-    baseUrl: "https://api.skillstormcloud.com/investments", //change
+    baseUrl: "https://api.aws-tfbd.com/investments",
   }),
   tagTypes: ["investment"],
 

@@ -42,7 +42,7 @@ export default function Landing() {
 
   useEffect(() => {
     (async () => {
-      await fetch("https://api.skillstormcloud.com/auth/getInfo", {
+      await fetch("https://api.aws-tfbd.com/auth/getInfo", {
         credentials: "include",
       })
         .then((res) => res.json())
@@ -61,7 +61,7 @@ export default function Landing() {
   }, []);
 
   const handleSignIn = () => {
-    window.location.replace("https://api.skillstormcloud.com/auth/login");
+    window.location.replace("https://api.aws-tfbd.com/auth/login");
     //window.location.replace("http://localhost:8125/auth/login");
   };
 

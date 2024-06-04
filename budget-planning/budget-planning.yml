@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: budget-planning-service
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8083
+  selector:
+    app: budget-planning
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: budget-planning
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: budget-planning
+  template:
+    metadata:
+      labels:
+        app: budget-planning
+    spec:
+      containers:
+        - name: budget-planning
+          image: public.ecr.aws/e2j5x1k4/budget-planning:latest
+          ports:
+            - containerPort: 8083
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service.default.svc.cluster.local:8761/eureka/
+            - name: EUREKA_INSTANCE_PREFERIPADDRESS
+              value: "true"

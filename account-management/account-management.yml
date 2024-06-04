@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-management-service
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8081
+  selector:
+    app: account-management
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-management
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-management
+  template:
+    metadata:
+      labels:
+        app: account-management
+    spec:
+      containers:
+        - name: account-management
+          image: public.ecr.aws/e2j5x1k4/account-management:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service.default.svc.cluster.local:8761/eureka/
+            - name: EUREKA_INSTANCE_PREFERIPADDRESS
+              value: "true"

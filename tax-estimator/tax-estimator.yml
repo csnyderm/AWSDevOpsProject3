@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tax-estimator-service
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8082
+  selector:
+    app: tax-estimator
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tax-estimator
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tax-estimator
+  template:
+    metadata:
+      labels:
+        app: tax-estimator
+    spec:
+      containers:
+        - name: tax-estimator
+          image: public.ecr.aws/e2j5x1k4/tax-estimator:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service.default.svc.cluster.local:8761/eureka/
+            - name: EUREKA_INSTANCE_PREFERIPADDRESS
+              value: "true"
