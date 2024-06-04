@@ -99,7 +99,8 @@ module "codebuild" {
   #service_role  = "" #var.codebuild_service_role_arn # Placeholder, replace
   service_role = module.iam.codebuild_role_arn
   region        = var.region
-  cluster_name = module.eks_module.cluster_name
+  eks_cluster_name = module.eks_module.cluster_name
+  ddb_cluster_name = var.ddb_cluster_name
   ddb_pass = module.documentdb.master_pass
   depends_on    = [module.codecommit, module.ecr]
 }

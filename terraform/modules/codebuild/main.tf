@@ -10,16 +10,22 @@ resource "aws_codebuild_project" "project" {
     image           = "aws/codebuild/standard:4.0"
     type            = "LINUX_CONTAINER"
     privileged_mode = false
-    
+
+environment_variable {
+      name = "DDB_CLUSTER_NAME"
+      value = var.ddb_cluster_name
+    }
+
     environment_variable {
       name = "PASSWORD"
       value = var.ddb_pass
     }
 
     environment_variable {
-      name = "CLUSTER_NAME"
-      value = var.cluster_name
+      name = "EKS_CLUSTER_NAME"
+      value = var.eks_cluster_name
     }
+
 
     environment_variable {
       name = "AWS_REGION"
