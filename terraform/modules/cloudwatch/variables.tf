@@ -26,3 +26,20 @@ variable "team_email" {
   type = string
   default = "someone@skillstorm.com"
 }
+
+variable "eks_cluster_name" {
+  type = string
+  default = "team-cuttlefish-cluster"
+}
+
+variable "alb_name" {
+  type = string
+}
+
+variable "ec2_instance_tag" {
+  type = string 
+}
+
+variable "ddb_cluster_id" {
+  type = string
+}

@@ -53,7 +53,7 @@ module "eks_module" {
   #cluster_role = "arn:aws:iam::785169158894:role/EKSClusterRoleDemo" # Update with value from IAM
   cluster_role = module.iam.eks_cluster_role_arn
 
-  codebuild_principal = module.iam.codebuild_role
+  codebuild_principal = module.iam.codebuild_role_arn
 
   #! These two are required
   cluster_public  = tolist(module.vpc_module.public_subnet_ids)
@@ -88,9 +88,9 @@ module "codecommit" {
 module "ecr" {
   source     = "./modules/ecr"
   depends_on = [module.codecommit]
-
-  ecr_policy = module.iam.ecr_policy_arn # Use this name
+  
   repository_names = var.project_names
+  ecr_policy = module.iam.ecr_policy_arn
 }
 
 module "codebuild" {
@@ -128,4 +128,7 @@ module "cloudwatch" {
   depends_on = [ module.codepipeline, module.eks_module, module.documentdb ]
 
   cloudfront_id = module.cloudfront.distribution_id
+  alb_name = "idk"
+  ec2_instance_tag = module.eks_module.node_group_name
+  ddb_cluster_id = module.documentdb.id
 }

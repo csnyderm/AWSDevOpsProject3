@@ -125,9 +125,9 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/DocDB", "CPUUtilization", "DBClusterIdentifier", data.aws_docdb_cluster.docdb_cluster.id],
-            ["AWS/DocDB", "FreeableMemory", "DBClusterIdentifier", data.aws_docdb_cluster.docdb_cluster.id],
-            ["AWS/DocDB", "DatabaseConnections", "DBClusterIdentifier", data.aws_docdb_cluster.docdb_cluster.id]
+            ["AWS/DocDB", "CPUUtilization", "DBClusterIdentifier", var.ddb_cluster_id],
+            ["AWS/DocDB", "FreeableMemory", "DBClusterIdentifier", var.ddb_cluster_id],
+            ["AWS/DocDB", "DatabaseConnections", "DBClusterIdentifier", var.ddb_cluster_id]
           ],
           view = "pie",
           region = var.aws_region,
@@ -142,8 +142,8 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/Cognito", "SignInSuccesses", "UserPoolId", data.aws_cognito_user_pool.user_pool.id],
-            ["AWS/Cognito", "SignInFailures", "UserPoolId", data.aws_cognito_user_pool.user_pool.id]
+            ["AWS/Cognito", "SignInSuccesses", "UserPoolId", data.aws_cognito_user_pools.user_pool.id],
+            ["AWS/Cognito", "SignInFailures", "UserPoolId", data.aws_cognito_user_pools.user_pool.id]
           ],
           view = "bar",
           region = var.aws_region,
@@ -252,7 +252,7 @@ resource "aws_cloudwatch_metric_alarm" "low_freeable_memory_docdb" {
   #alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   alarm_actions = [aws_sns_topic.cuttlefish-topic.arn]
   dimensions = {
-    DBClusterIdentifier = data.aws_docdb_cluster.docdb_cluster.id
+    DBClusterIdentifier = var.ddb_cluster_id
   }
 }
 
@@ -269,7 +269,7 @@ resource "aws_cloudwatch_metric_alarm" "high_sign_in_failures_cognito" {
   #alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   alarm_actions = [aws_sns_topic.cuttlefish-topic.arn]
   dimensions = {
-    UserPoolId = data.aws_cognito_user_pool.user_pool.id
+    UserPoolId = data.aws_cognito_user_pools.user_pool.id
   }
 }
 
@@ -286,7 +286,7 @@ resource "aws_cloudwatch_metric_alarm" "high_database_connections_docdb" {
   #alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   alarm_actions = [aws_sns_topic.cuttlefish-topic.arn]
   dimensions = {
-    DBClusterIdentifier = data.aws_docdb_cluster.docdb_cluster.id
+    DBClusterIdentifier = var.ddb_cluster_id
   }
 }
 

@@ -1,27 +1,27 @@
 # Data sources to dynamically get the required IDs
 data "aws_eks_cluster" "cluster" {
-  name = "team-cuttlefish-cluster"
+  name = var.eks_cluster_name
 }
 
 data "aws_elb" "alb" {
-  name = "my-load-balancer"
+  name = var.alb_name
 }
 
 data "aws_instance" "ec2_instance" {
   filter {
-    name   = "tag:Name"
-    values = ["your-ec2-instance-tag"]
+    name   = "tag:eks:nodegroupname"
+    values = [var.ec2_instance_tag]
   }
 }
-
+/*
 data "aws_docdb_cluster" "docdb_cluster" {
   filter {
     name   = "tag:Name"
     values = ["your-docdb-cluster-tag"]
   }
-}
+}*/
 
-data "aws_cognito_user_pool" "user_pool" {
+data "aws_cognito_user_pools" "user_pool" {
   name = "us-east-1_Ne5xAWeWT"
 }
 

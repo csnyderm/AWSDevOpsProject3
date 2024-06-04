@@ -23,11 +23,6 @@ variable "s3_bucket_name" {
   default = "teamcuttlefish"
 }
 
-variable "ecr_policy" {
-  description = "ECR policy JSON"
-  type        = string
-}
-
 variable "ddb_cluster_name" {
   type = string
   default = "team-cuttlefish-docdb"
