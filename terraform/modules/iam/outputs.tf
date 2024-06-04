@@ -30,6 +30,7 @@ output "codecommit_user_arn" {
 #! Name of output: "ecr_policy_arn"
 
 
+
 output "codebuild_role_arn" {
   value = aws_iam_role.codebuild_role.arn
 }
