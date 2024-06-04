@@ -11,7 +11,7 @@ resource "aws_codebuild_project" "project" {
     type            = "LINUX_CONTAINER"
     privileged_mode = false
 
-environment_variable {
+  environment_variable {
       name = "DDB_CLUSTER_NAME"
       value = var.ddb_cluster_name
     }
