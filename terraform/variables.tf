@@ -17,3 +17,19 @@ variable "s3_bucket_name" {
   type = string
   default = "teamcuttlefish"
 }
+
+variable "repository_names" {
+  description = "List of ECR public repository names"
+  type        = list(string)
+  default     = ["frontend", "API", "account-management", "budget-planning", "eureka", "investments", "tax-estimator"]
+}
+
+variable "team" {
+  description = "Team name"
+  type        = string
+}
+
+variable "ecr_policy" {
+  description = "ECR policy JSON"
+  type        = string
+}

@@ -107,3 +107,15 @@ module "codepipeline" {
   # Because it depends on CodeBuild, which depends on Commit/ECR, it implicitly relies on them as well
   depends_on = [module.codebuild, module.iam]
 }
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+module "ecr" {
+  source = "./modules/ecr"
+
+  repository_names = var.repository_names
+  team             = var.team
+  ecr_policy       = var.ecr_policy
+}
