@@ -555,13 +555,6 @@ resource "aws_iam_user_ssh_key" "codecommit_ssh_key" {
 }
 
 
-#! ADD IN INFO FOR THE ECR HERE!!
-#! Note: Removed CodeBuild and CodePipeline policy info that was originally sourced from
-#!       IAM.tf in main. Kept the versions from IAM-P3.tf file.
-#!       Please verify these are the correct versions.
-#!       (The permissions were more specific in IAM-P3.tf, so I assumed it was the
-#!       correct version of these documents)
-
 resource "aws_iam_policy_document" "team_cuttlefish_ecr_policy" {
   statement {
     sid    = "teamCuttlefishPolicy"

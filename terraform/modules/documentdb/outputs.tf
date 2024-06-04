@@ -2,6 +2,10 @@ output "master_username" {
   value = join("", aws_docdb_cluster.cuttlefish_db.*.master_username)
 }
 
+output "master_pass" {
+  value = aws_docdb_cluster.cuttlefish_db.master_password
+}
+
 output "cluster_name" {
   value = join("", aws_docdb_cluster.cuttlefish_db.*.cluster_identifier)
 }

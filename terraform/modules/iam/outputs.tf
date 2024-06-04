@@ -26,10 +26,9 @@ output "codecommit_user_arn" {
   value = aws_iam_user.codecommit_user.arn
 }
 
-#! Add ECR Outputs here
-#! Name of output: "ecr_policy_arn"
-
-
+output "ecr_policy_arn" {
+  value = aws_iam_policy.team_cuttlefish_ecr_policy.arn
+}
 
 output "codebuild_role_arn" {
   value = aws_iam_role.codebuild_role.arn
