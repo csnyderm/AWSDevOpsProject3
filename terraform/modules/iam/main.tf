@@ -555,32 +555,36 @@ resource "aws_iam_user_ssh_key" "codecommit_ssh_key" {
 }
 
 
-resource "aws_iam_policy_document" "team_cuttlefish_ecr_policy" {
-  statement {
-    sid    = "teamCuttlefishPolicy"
-    effect = "Allow"
-    principals {
-      type = "AWS"
-      identifiers = ["785169158894"]
-    }
-
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload",
-      "ecr:DescribeRepositories",
-      "ecr:GetRepositoryPolicy",
-      "ecr:ListImages",
-      "ecr:DeleteRepository",
-      "ecr:BatchDeleteImage",
-      "ecr:SetRepositoryPolicy",
-      "ecr:DeleteRepositoryPolicy"
+resource "aws_iam_policy" "team_cuttlefish_ecr_policy" {
+  name = "team-cuttlefish-ecr-policy"
+  description = "ECR Policy for Team Cuttlefish"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::785169158894:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchDeleteImage",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:DeleteRepository",
+          "ecr:DeleteRepositoryPolicy",
+          "ecr:DescribeRepositories",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetRepositoryPolicy",
+          "ecr:InitiateLayerUpload",
+          "ecr:ListImages",
+          "ecr:PutImage",
+          "ecr:SetRepositoryPolicy",
+          "ecr:UploadLayerPart"
+        ]
+      }
     ]
-  }
+    })
 }
 
 

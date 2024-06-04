@@ -14,7 +14,11 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "cluster_name" {
+variable "eks_cluster_name" {
+  type = string
+}
+
+variable "ddb_cluster_name" {
   type = string
 }
 

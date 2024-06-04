@@ -32,6 +32,7 @@ resource "aws_codebuild_project" "project" {
       value = var.region
     }
   }
+  
   source {
     type      = "CODECOMMIT"
     location  = "https://git-codecommit.${var.region}.amazonaws.com/v1/repos/${var.project_names[count.index]}"
