@@ -23,7 +23,7 @@ resource "aws_security_group" "documentdb_sg" {
   }
 }
 
-resource "aws_security_group_rule" "Allow ingress from db" {
+resource "aws_security_group_rule" "eks_ingress" {
   security_group_id = var.ingress_sg
   type = "ingress"
   from_port = 0
