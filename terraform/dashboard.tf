@@ -2,6 +2,44 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# Data sources to dynamically get the required IDs
+data "aws_eks_cluster" "cluster" {
+  name = "team-cuttlefish-cluster"
+}
+
+data "aws_elb" "alb" {
+  name = "my-load-balancer"
+}
+
+data "aws_instance" "ec2_instance" {
+  filter {
+    name   = "tag:Name"
+    values = ["your-ec2-instance-tag"]
+  }
+}
+
+data "aws_docdb_cluster" "docdb_cluster" {
+  filter {
+    name   = "tag:Name"
+    values = ["your-docdb-cluster-tag"]
+  }
+}
+
+data "aws_cognito_user_pool" "user_pool" {
+  name = "us-east-1_Ne5xAWeWT"
+}
+
+data "aws_s3_bucket" "s3_bucket" {
+  bucket = "teamcuttlefish"
+}
+
+data "aws_cloudfront_distribution" "distribution" {
+  filter {
+    name   = "tag:Name"
+    values = ["your-cloudfront-distribution-tag"]
+  }
+}
+
 resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
   dashboard_name = "Team-Cuttlefish"
   dashboard_body = jsonencode({
@@ -14,7 +52,7 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/EKS", "CPUUtilization", "ClusterName", "your-cluster-name"]
+            ["AWS/EKS", "CPUUtilization", "ClusterName", data.aws_eks_cluster.cluster.name]
           ],
           view = "timeSeries",
           stacked = false,
@@ -32,7 +70,7 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/EKS", "MemoryUtilization", "ClusterName", "your-cluster-name"]
+            ["AWS/EKS", "MemoryUtilization", "ClusterName", data.aws_eks_cluster.cluster.name]
           ],
           view = "timeSeries",
           stacked = false,
@@ -50,7 +88,7 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/EKS", "PodCount", "ClusterName", "your-cluster-name"]
+            ["AWS/EKS", "PodCount", "ClusterName", data.aws_eks_cluster.cluster.name]
           ],
           view = "singleValue",
           region = "us-east-1",
@@ -65,10 +103,10 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "RequestCount", "LoadBalancer", "app/my-load-balancer/50dc6c495c0c9188"],
-            ["AWS/ApplicationELB", "HTTPCode_ELB_4XX_Count", "LoadBalancer", "app/my-load-balancer/50dc6c495c0c9188"],
-            ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", "app/my-load-balancer/50dc6c495c0c9188"],
-            ["AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", "app/my-load-balancer/50dc6c495c0c9188"]
+            ["AWS/ApplicationELB", "RequestCount", "LoadBalancer", data.aws_elb.alb.name],
+            ["AWS/ApplicationELB", "HTTPCode_ELB_4XX_Count", "LoadBalancer", data.aws_elb.alb.name],
+            ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", data.aws_elb.alb.name],
+            ["AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", data.aws_elb.alb.name]
           ],
           view = "bar",
           stacked = true,
@@ -84,7 +122,7 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/EC2", "CPUUtilization", "InstanceId", "i-1234567890abcdef0"]
+            ["AWS/EC2", "CPUUtilization", "InstanceId", data.aws_instance.ec2_instance.id]
           ],
           view = "gauge",
           region = "us-east-1",
@@ -99,8 +137,8 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/EC2", "NetworkIn", "InstanceId", "i-1234567890abcdef0"],
-            ["AWS/EC2", "NetworkOut", "InstanceId", "i-1234567890abcdef0"]
+            ["AWS/EC2", "NetworkIn", "InstanceId", data.aws_instance.ec2_instance.id],
+            ["AWS/EC2", "NetworkOut", "InstanceId", data.aws_instance.ec2_instance.id]
           ],
           view = "line",
           region = "us-east-1",
@@ -115,9 +153,9 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/DocDB", "CPUUtilization", "DBClusterIdentifier", "your-docdb-cluster-id"],
-            ["AWS/DocDB", "FreeableMemory", "DBClusterIdentifier", "your-docdb-cluster-id"],
-            ["AWS/DocDB", "DatabaseConnections", "DBClusterIdentifier", "your-docdb-cluster-id"]
+            ["AWS/DocDB", "CPUUtilization", "DBClusterIdentifier", data.aws_docdb_cluster.docdb_cluster.id],
+            ["AWS/DocDB", "FreeableMemory", "DBClusterIdentifier", data.aws_docdb_cluster.docdb_cluster.id],
+            ["AWS/DocDB", "DatabaseConnections", "DBClusterIdentifier", data.aws_docdb_cluster.docdb_cluster.id]
           ],
           view = "pie",
           region = "us-east-1",
@@ -132,8 +170,8 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/Cognito", "SignInSuccesses", "UserPoolId", "your-cognito-user-pool-id"],
-            ["AWS/Cognito", "SignInFailures", "UserPoolId", "your-cognito-user-pool-id"]
+            ["AWS/Cognito", "SignInSuccesses", "UserPoolId", data.aws_cognito_user_pool.user_pool.id],
+            ["AWS/Cognito", "SignInFailures", "UserPoolId", data.aws_cognito_user_pool.user_pool.id]
           ],
           view = "bar",
           region = "us-east-1",
@@ -148,8 +186,8 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/S3", "BucketSizeBytes", "BucketName", "your-bucket-name"],
-            ["AWS/S3", "NumberOfObjects", "BucketName", "your-bucket-name"]
+            ["AWS/S3", "BucketSizeBytes", "BucketName", data.aws_s3_bucket.s3_bucket.id],
+            ["AWS/S3", "NumberOfObjects", "BucketName", data.aws_s3_bucket.s3_bucket.id]
           ],
           view = "line",
           region = "us-east-1",
@@ -164,10 +202,10 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/CloudFront", "Requests", "DistributionId", "E1V5LUPIOTZWHQ"],
-            ["AWS/CloudFront", "BytesDownloaded", "DistributionId", "E1V5LUPIOTZWHQ"],
-            ["AWS/CloudFront", "4xxErrorRate", "DistributionId", "E1V5LUPIOTZWHQ"],
-            ["AWS/CloudFront", "5xxErrorRate", "DistributionId", "E1V5LUPIOTZWHQ"]
+            ["AWS/CloudFront", "Requests", "DistributionId", data.aws_cloudfront_distribution.distribution.id],
+            ["AWS/CloudFront", "BytesDownloaded", "DistributionId", data.aws_cloudfront_distribution.distribution.id],
+            ["AWS/CloudFront", "4xxErrorRate", "DistributionId", data.aws_cloudfront_distribution.distribution.id],
+            ["AWS/CloudFront", "5xxErrorRate", "DistributionId", data.aws_cloudfront_distribution.distribution.id]
           ],
           view = "bar",
           region = "us-east-1",
@@ -190,7 +228,7 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
   alarm_description   = "Alarm when CPU utilization exceeds 80%"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    InstanceId = "i-1234567890abcdef0"
+    InstanceId = data.aws_instance.ec2_instance.id
   }
 }
 
@@ -206,7 +244,7 @@ resource "aws_cloudwatch_metric_alarm" "high_error_rate_5xx" {
   alarm_description   = "Alarm when 5xx error rate exceeds 5%"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    LoadBalancer = "app/my-load-balancer/50dc6c495c0c9188"
+    LoadBalancer = data.aws_elb.alb.name
   }
 }
 
@@ -222,7 +260,7 @@ resource "aws_cloudwatch_metric_alarm" "high_memory_utilization" {
   alarm_description   = "Alarm when memory utilization exceeds 80%"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    ClusterName = "your-cluster-name"
+    ClusterName = data.aws_eks_cluster.cluster.name
   }
 }
 
@@ -238,7 +276,7 @@ resource "aws_cloudwatch_metric_alarm" "low_freeable_memory_docdb" {
   alarm_description   = "Alarm when freeable memory in DocumentDB is less than 100MB"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    DBClusterIdentifier = "your-docdb-cluster-id"
+    DBClusterIdentifier = data.aws_docdb_cluster.docdb_cluster.id
   }
 }
 
@@ -254,7 +292,7 @@ resource "aws_cloudwatch_metric_alarm" "high_sign_in_failures_cognito" {
   alarm_description   = "Alarm when the number of failed sign-ins in Cognito exceeds 10"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    UserPoolId = "your-cognito-user-pool-id"
+    UserPoolId = data.aws_cognito_user_pool.user_pool.id
   }
 }
 
@@ -270,7 +308,7 @@ resource "aws_cloudwatch_metric_alarm" "high_database_connections_docdb" {
   alarm_description   = "Alarm when the number of database connections in DocumentDB exceeds 100"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    DBClusterIdentifier = "your-docdb-cluster-id"
+    DBClusterIdentifier = data.aws_docdb_cluster.docdb_cluster.id
   }
 }
 
@@ -286,7 +324,7 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_size" {
   alarm_description   = "Alarm when S3 bucket size exceeds 1TB"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    BucketName = "your-bucket-name"
+    BucketName = data.aws_s3_bucket.s3_bucket.bucket
   }
 }
 
@@ -302,7 +340,7 @@ resource "aws_cloudwatch_metric_alarm" "high_4xx_error_rate_cloudfront" {
   alarm_description   = "Alarm when 4xx error rate in CloudFront exceeds 5%"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    DistributionId = "E1V5LUPIOTZWHQ"
+    DistributionId = data.aws_cloudfront_distribution.distribution.id
   }
 }
 
@@ -318,6 +356,6 @@ resource "aws_cloudwatch_metric_alarm" "high_5xx_error_rate_cloudfront" {
   alarm_description   = "Alarm when 5xx error rate in CloudFront exceeds 5%"
   alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   dimensions = {
-    DistributionId = "E1V5LUPIOTZWHQ"
+    DistributionId = data.aws_cloudfront_distribution.distribution.id
   }
 }
