@@ -119,3 +119,13 @@ module "codepipeline" {
   # Because it depends on CodeBuild, which depends on Commit/ECR, it implicitly relies on them as well
   depends_on = [module.codebuild, module.iam]
 }
+
+module "cloudwatch" {
+  source = "./modules/cloudwatch"
+
+  # Depends on our big 3. Since CodePipeline needs everything before it, and
+  # DocDB/EKS only need VPC, everything should be up once these three are done
+  depends_on = [ module.codepipeline, module.eks_module, module.documentdb ]
+
+  cloudfront_id = module.cloudfront.distribution_id
+}

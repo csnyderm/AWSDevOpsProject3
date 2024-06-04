@@ -1,0 +1,28 @@
+variable "team" {
+  type = string
+  default = "cuttlefish"
+}
+
+variable "aws_region" {
+  type = string
+  default = "us-east-1"
+}
+
+variable "cloudfront_id" {
+  type = string
+}
+
+variable "dashboard_name" {
+  type = string
+  default = "Team-Cuttlefish"
+}
+
+variable "sns_topic_name" {
+  type = string
+  default = "team-cuttlefish-topic"
+}
+
+variable "team_email" {
+  type = string
+  default = "someone@skillstorm.com"
+}

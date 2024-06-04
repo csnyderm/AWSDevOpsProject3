@@ -22,3 +22,7 @@ output "response_headers_policy_id" {
   description = "The ID of the CloudFront response headers policy"
   value       = aws_cloudfront_response_headers_policy.response_headers_policy.id
 }
+
+output "distribution_id" {
+  value = aws_cloudfront_distribution.cdn.id
+}
