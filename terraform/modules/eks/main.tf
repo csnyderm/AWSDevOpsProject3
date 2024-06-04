@@ -73,6 +73,12 @@ resource "aws_eks_access_policy_association" "eks_cluster_association" {
   }
 }
 
+resource "aws_eks_access_entry" "codebuild_access" {
+  cluster_name  = aws_eks_cluster.project3-cluster.name
+  principal_arn = var.codebuild_principal
+  type          = "STANDARD"
+}
+
 resource "aws_eks_access_policy_association" "codebuild_admin_access" {
   cluster_name  = aws_eks_cluster.project3-cluster.name
   policy_arn    = var.eks_admin_user_policy
