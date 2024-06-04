@@ -27,6 +27,7 @@ output "codecommit_user_arn" {
 }
 
 #! Add ECR Outputs here
+#! Name of output: "ecr_policy_arn"
 
 
 output "codebuild_role_arn" {

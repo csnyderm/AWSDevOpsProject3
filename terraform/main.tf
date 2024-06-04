@@ -89,7 +89,7 @@ module "ecr" {
   source     = "./modules/ecr"
   depends_on = [module.codecommit]
 
-  ecr_policy = module.iam.ecr_policy
+  ecr_policy = module.iam.ecr_policy_arn # Use this name
   repository_names = var.project_names
 }
 

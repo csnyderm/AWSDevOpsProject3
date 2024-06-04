@@ -532,6 +532,35 @@ resource "aws_iam_user_ssh_key" "codecommit_ssh_key" {
 #!       (The permissions were more specific in IAM-P3.tf, so I assumed it was the
 #!       correct version of these documents)
 
+resource "aws_iam_policy_document" "team_cuttlefish_ecr_policy" {
+  statement {
+    sid    = "teamCuttlefishPolicy"
+    effect = "Allow"
+    principals {
+      type = "AWS"
+      identifiers = ["785169158894"]
+    }
+
+    actions = [
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:PutImage",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload",
+      "ecr:DescribeRepositories",
+      "ecr:GetRepositoryPolicy",
+      "ecr:ListImages",
+      "ecr:DeleteRepository",
+      "ecr:BatchDeleteImage",
+      "ecr:SetRepositoryPolicy",
+      "ecr:DeleteRepositoryPolicy"
+    ]
+  }
+}
+
+
 resource "aws_iam_role" "codebuild_role" {
   name = "CodeBuildRole"
 
@@ -562,7 +591,7 @@ resource "aws_iam_policy" "codebuild_policy" {
           "s3:GetObject",
           "s3:GetObjectVersion",
           "s3:PutObject",
-          "s3:ListBucket"
+          "s3:ListBucket",
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
           "ecr-public:GetAuthorizationToken",
@@ -580,10 +609,10 @@ resource "aws_iam_policy" "codebuild_policy" {
           "ecr-public:CompleteLayerUpload",
           "ecr-public:PutImage",
           "cloudwatch:PutMetricData",
-          "documentdb:DescribeDBClusters"
+          "documentdb:DescribeDBClusters",
           "codebuild:BatchGetBuilds",
           "codebuild:StartBuild",
-          "codebuild:StopBuild",
+          "codebuild:StopBuild"
         ],
         Resource = "*"
       }
