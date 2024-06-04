@@ -35,7 +35,7 @@ export const accountApi = createApi({
   reducerPath: "accountApi",
   baseQuery: fetchBaseQuery({
     //baseUrl: "http://localhost:8125/accounts",
-    baseUrl: "https://api.skillstormcloud.com/accounts", //base url needs to change
+    baseUrl: "https://api.aws-tfbd.com/accounts",
     credentials: "include",
   }),
   tagTypes: ["account"],

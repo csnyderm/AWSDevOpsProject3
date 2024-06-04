@@ -4,7 +4,7 @@ server:
 spring:
   data:
     mongodb: #change
-      uri: mongodb://root:password@project3-tfbd.cluster-clis6agkvpm0.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
+      uri: mongodb://teamcuttlefish:password@docdb-team-cuttlefish.cluster-cclvcxpivbxt.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
       database: skillvestDB
   application:
     name: investments

@@ -42,7 +42,11 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - echo Docker image pushed successfully
       - echo Applying Kubernetes manifests...
-      # - kubectl apply -f manifest.yaml
-      # - echo Updating Kubernetes deployment...
-      # - kubectl set image deployment/<your-deployment-name> <container-name>=$REPOSITORY_URI:lastest
-      # - kubectl rollout restart deployment/<your-deployment-name>
+      - kubectl apply -f budget-planning.yml --validate=false
+      - echo Updating Kubernetes deployment...
+      - kubectl set image deployment/budget-planning budget-planning=$REPOSITORY_URI:latest
+      - kubectl rollout restart deployment/budget-planning
+
+artifacts:
+  files:
+    - '**/*'

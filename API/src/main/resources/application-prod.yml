@@ -1,7 +1,7 @@
 app:
-  redirectUrl: https://team-cuttlefish.aws-tfbd.com #changed
-  logoutUrl: https://team-cuttlefish.aws-tfbd.com
-  origin: https://team-cuttlefish.aws-tfbd.com
+  redirectUrl: https://frontend.aws-tfbd.com #changed
+  logoutUrl: https://frontend.aws-tfbd.com
+  origin: https://frontend.aws-tfbd.com
 
 
 server:
@@ -12,7 +12,7 @@ eureka:
     registerWithEureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka.default.svc.cluster.local/eureka/ # make sure this matches with eureka server name, the same as the DNS name in the cluster
+      defaultZone: http://eureka-service.default.svc.cluster.local/eureka/ # make sure this matches with eureka server name, the same as the DNS name in the cluster
   instance:
     preferIpAddress: true
 
@@ -23,20 +23,20 @@ spring:
         registration:
           cognito: # fill in these values once cognito is created
             provider: cognito
-            clientId: 5tmo2k20fvqilnip2ulgoj5cbv
-            clientSecret: vldkj6pnmp3c8k9n8f7pom749n7hqs127buvgjpoj0e48phv54u
+            clientId: 2d3svka6127sau8iqv81qqu0us
+            clientSecret: 1svdg13925sq2j9jk9nbb1qafeibuv11f63l8ukem6opgv97fc4i
             scope: openid,email,profile
-            redirect-uri: https://api.skillstormcloud.com/login/oauth2/code/cognito
+            redirect-uri: https://api.aws-tfbd.com/login/oauth2/code/cognito
             #https://frontend.bgomes.aws-tfbd.com/auth/login/oauth2/code/cognito
-            clientName: SkillVest
+            clientName: skillvest-cognito
             authorization-grant-type: authorization_code
         provider:
           cognito: # these values are related to the app client
-            authorization-uri: https://skillvest.auth.us-east-1.amazoncognito.com/oauth2/authorize
-            token-uri: https://skillvest.auth.us-east-1.amazoncognito.com/oauth2/token
-            jwk-set-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2EO1Jous7/.well-known/jwks.json # this value can be found in app client -> token signing key url
-            user-info-uri: https://skillvest.auth.us-east-1.amazoncognito.com/oauth2/userInfo
-            issuerUri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_2EO1Jous7
+            authorization-uri: https://tfbd.auth.us-east-1.amazoncognito.com/oauth2/authorize
+            token-uri: https://tfbd.auth.us-east-1.amazoncognito.com/oauth2/token
+            jwk-set-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_Ne5xAWeWT/.well-known/jwks.json # this value can be found in app client -> token signing key url
+            user-info-uri: https://tfbd.auth.us-east-1.amazoncognito.com/oauth2/userInfo
+            issuerUri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_Ne5xAWeWT
             user-name-attribute: cognito:username
 
   application:
@@ -51,7 +51,7 @@ spring:
         add-to-simple-url-handler-mapping: "true"
         cors-configurations:
           '[/**]':
-            allowedOrigins: "https://team-cuttlefish.aws-tfbd.com" #changed
+            allowedOrigins: "https://frontend.aws-tfbd.com" #changed
             allowedHeaders: "*"
             allowCredentials: true
             allowedMethods:

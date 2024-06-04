@@ -19,7 +19,7 @@ export const goalsApi = createApi({
   reducerPath: "goalsApi",
   baseQuery: fetchBaseQuery({
     //baseUrl: " http://localhost:8125/goals",
-    baseUrl: "https://api.skillstormcloud.com/goals", //change //goalsAPI may not work
+    baseUrl: "https://api.aws-tfbd.com/goals",
     credentials: "include",
   }),
   tagTypes: ["goal"],

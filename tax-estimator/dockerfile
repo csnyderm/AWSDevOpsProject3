@@ -1,5 +1,5 @@
 # NEEDS REPLACED WITH BRIANS IMAGE
-FROM maven:3.8.4-openjdk-17 as build
+FROM public.ecr.aws/e2j5x1k4/builds:maven as build
 
 # Set the working directory in the container
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY . /app/
 RUN mvn clean install -DskipTests
 
 # NEEDS REPLACED WITH BRIANS IMAGE
-FROM public.ecr.aws/c1x4i8c4/alpine:latest
+FROM public.ecr.aws/e2j5x1k4/builds:java
 
 WORKDIR /app
 

@@ -59,7 +59,7 @@ export const taxApi = createApi({
   reducerPath: "taxApi",
   baseQuery: fetchBaseQuery({
     //baseUrl: "http://localhost:8125/taxes",
-    baseUrl: "https://api.skillstormcloud.com/taxes", //change
+    baseUrl: "https://api.aws-tfbd.com/taxes",
     credentials: "include",
   }),
   tagTypes: ["taxData"],

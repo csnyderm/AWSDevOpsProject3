@@ -1,4 +1,11 @@
-# use this to change spring profiles
+server:
+  port: 8761 #standard port used for Eureka server
+
 spring:
-  profiles:
-    active: prod
+  application:
+    name: skillvest
+#Need to tell the eureka server to not register itself with itself
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
