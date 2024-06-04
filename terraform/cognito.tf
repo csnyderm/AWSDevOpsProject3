@@ -1,3 +1,5 @@
+#! MARKED FOR DELETION
+
 resource "aws_cognito_user_pool" "team_cuttlefish_pool" {
   name                     = "team-cuttlefish-pool"
   auto_verified_attributes = ["email", "phone_number"]

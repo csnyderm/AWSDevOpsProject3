@@ -68,6 +68,10 @@ variable "student_principal" {
   default = "arn:aws:iam::785169158894:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_Student_1462e2a20cbcb77f"
 }
 
+variable "codebuild_principal" {
+  type = string
+}
+
 variable "eks_admin_user_policy" {
   type    = string
   default = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
@@ -119,14 +123,14 @@ variable "unavailable_nodes" {
 variable "node_disk_size" {
   type        = string
   description = "How much EBS storage space is needed?"
-  default     = "20GB"
+  default     = "20"
 }
 
 #! Consider ON_DEMAND
 variable "node_instance_pricing" {
   type        = string
   description = "The pricing model for the instances. Valid: ON_DEMAND, SPOT"
-  default     = "ON-DEMAND"
+  default     = "ON_DEMAND"
 }
 
 variable "node_instance_types" {

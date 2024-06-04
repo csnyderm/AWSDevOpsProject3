@@ -53,7 +53,7 @@ resource "aws_eks_access_entry" "eks_access" {
   type          = "STANDARD"
 }
 
-resource "aws_eks_access_policy_association" "eks_access_association" {
+resource "aws_eks_access_policy_association" "eks_admin_association" {
   cluster_name  = aws_eks_cluster.project3-cluster.name
   policy_arn    = var.eks_admin_user_policy
   principal_arn = var.student_principal
@@ -63,10 +63,30 @@ resource "aws_eks_access_policy_association" "eks_access_association" {
   }
 }
 
-resource "aws_eks_access_policy_association" "eks_access_association" {
+resource "aws_eks_access_policy_association" "eks_cluster_association" {
   cluster_name  = aws_eks_cluster.project3-cluster.name
   policy_arn    = var.eks_cluster_user_policy
   principal_arn = var.student_principal
+
+  access_scope {
+    type = "cluster"
+  }
+}
+
+resource "aws_eks_access_policy_association" "codebuild_admin_access" {
+  cluster_name  = aws_eks_cluster.project3-cluster.name
+  policy_arn    = var.eks_admin_user_policy
+  principal_arn = var.codebuild_principal
+
+  access_scope {
+    type = "cluster"
+  }
+}
+
+resource "aws_eks_access_policy_association" "codebuild_cluster_association" {
+  cluster_name  = aws_eks_cluster.project3-cluster.name
+  policy_arn    = var.eks_cluster_user_policy
+  principal_arn = var.codebuild_principal
 
   access_scope {
     type = "cluster"

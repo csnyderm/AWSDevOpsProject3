@@ -32,3 +32,7 @@ variable "cloudfront_prefix_list" {
   type    = string
   default = "pl-3b927c52"
 }
+
+variable "codebuild_role" {
+  type = string
+}

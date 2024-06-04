@@ -48,7 +48,7 @@ resource "aws_s3_bucket_policy" "static_site_policy" {
         Sid : "AllowCodeBuildFrontendRole",
         Effect = "Allow",
         Principal = {
-          AWS = "${aws_iam_role.codebuild_role.arn}"
+          AWS = "${var.codebuild_role}"
         },
         Action = [
           "s3:GetObject",
