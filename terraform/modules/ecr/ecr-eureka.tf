@@ -1,3 +1,4 @@
+#! MARKED FOR DELETION
 resource "aws_ecrpublic_repository" "eureka" {
   repository_name = "eureka"
 
