@@ -17,23 +17,50 @@ resource "aws_iam_role" "route53_role" {
 }
 
 resource "aws_iam_policy" "route53_policy" {
-  name        = "Route53Policy"
-  description = "Policy for Route53 access"
-  
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect   = "Allow",
-        Action   = [
-          "route53:ChangeResourceRecordSets"
-        ],
-        Resource = "*"
-      }
-    ]
-  })
-}
-
+ name        = "Route53Policy"
+ description = "Policy for Route53 access"
+ policy = jsonencode({
+   Version = "2012-10-17",
+   Statement = [
+     {
+       Effect = "Allow",
+       Action = [
+         "route53:CreateHostedZone",
+         "route53:DeleteHostedZone",
+         "route53:GetHostedZone",
+         "route53:ListHostedZones",
+         "route53:GetChange",
+         "route53:AssociateVPCWithHostedZone",
+         "route53:DisassociateVPCFromHostedZone",
+         "route53:ListHostedZonesByName",
+         "route53:ListHostedZonesByVPC",
+         "route53:TestDNSAnswer",
+         "route53:CreateHealthCheck",
+         "route53:DeleteHealthCheck",
+         "route53:GetHealthCheck",
+         "route53:ListHealthChecks",
+         "route53:UpdateHealthCheck",
+         "route53:GetHealthCheckStatus",
+         "route53:ListTagsForResource",
+         "route53:ListTagsForResources",
+         "route53:ChangeTagsForResource"
+       ],
+       Resource = "*"
+     },
+     {
+       Effect = "Allow",
+       Action = [
+         "route53domains:CheckDomainAvailability",
+         "route53domains:DeleteDomain",
+         "route53domains:GetDomainDetail",
+         "route53domains:ListDomains",
+         "route53domains:UpdateDomainContact",
+         "route53domains:UpdateDomainContactPrivacy",
+         "route53domains:UpdateDomainNameservers",
+         "route53domains:ViewBilling"
+       ],
+       Resource = "*"
+     }
 resource "aws_iam_role_policy_attachment" "route53_policy_attach" {
   role       = aws_iam_role.route53_role.name
   policy_arn = aws_iam_policy.route53_policy.arn
