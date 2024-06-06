@@ -3,13 +3,15 @@ data "aws_eks_cluster" "cluster" {
   name = var.eks_cluster_name
 }
 
-data "aws_elb" "alb" {
-  name = var.alb_name
+data "aws_lb" "alb" {
+  tags = {
+    "elbv2.k8s.aws/cluster" = var.alb_name
+  }
 }
 
 data "aws_instance" "ec2_instance" {
   filter {
-    name   = "tag:eks:nodegroupname"
+    name   = "instance-id"
     values = [var.ec2_instance_tag]
   }
 }

@@ -24,7 +24,7 @@ variable "sns_topic_name" {
 
 variable "team_email" {
   type = string
-  default = "someone@skillstorm.com"
+  default = "nlaws@skillstorm.com"
 }
 
 variable "eks_cluster_name" {

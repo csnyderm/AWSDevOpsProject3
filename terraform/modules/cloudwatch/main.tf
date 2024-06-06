@@ -75,10 +75,10 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
         height = 6,
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "RequestCount", "LoadBalancer", data.aws_elb.alb.name],
-            ["AWS/ApplicationELB", "HTTPCode_ELB_4XX_Count", "LoadBalancer", data.aws_elb.alb.name],
-            ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", data.aws_elb.alb.name],
-            ["AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", data.aws_elb.alb.name]
+            ["AWS/ApplicationELB", "RequestCount", "LoadBalancer", data.aws_lb.alb.name],
+            ["AWS/ApplicationELB", "HTTPCode_ELB_4XX_Count", "LoadBalancer", data.aws_lb.alb.name],
+            ["AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", data.aws_lb.alb.name],
+            ["AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", data.aws_lb.alb.name]
           ],
           view = "bar",
           stacked = true,
@@ -99,6 +99,15 @@ resource "aws_cloudwatch_dashboard" "team_cuttlefish_dashboard" {
           view = "gauge",
           region = var.aws_region,
           title = "EC2 CPU Utilization"
+          yAxis = {
+            left = {
+              min = 0,
+              max = 100
+            },
+            right = {
+              min = 50
+            }
+          }
         }
       },
       {
@@ -218,7 +227,7 @@ resource "aws_cloudwatch_metric_alarm" "high_error_rate_5xx" {
   #alarm_actions       = ["arn:aws:sns:us-east-1:123456789012:MyTopic"]
   alarm_actions = [aws_sns_topic.cuttlefish-topic.arn]
   dimensions = {
-    LoadBalancer = data.aws_elb.alb.name
+    LoadBalancer = data.aws_lb.alb.name
   }
 }
 
